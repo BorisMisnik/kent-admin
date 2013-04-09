@@ -1,17 +1,12 @@
 /* (c) http://blog.countableset.ch/2012/01/29/twitter-bootstrap-login-page */
-/* Override some defaults */
-html, body {
-    background-color: #eee;
-}
-body {
-    padding-top: 40px;
-}
-.container {
+
+.login.container {
+    margin-top: 40px;
     width: 300px;
 }
 
 /* The white background content wrapper */
-.container > .content {
+.login.container > .content {
     background-color: #fff;
     padding: 20px;
     margin: 0 -20px;
@@ -27,7 +22,7 @@ body {
     margin-left: 65px;
 }
 
-legend {
+.login legend {
     margin-right: -50px;
     font-weight: bold;
     color: #404040;

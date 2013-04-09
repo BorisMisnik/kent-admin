@@ -1,7 +1,7 @@
 define(
     [
         'libs/router',
-        'models/user',
+        'models/user'
     ],
     function( router, user ) {
         Backbone.log( 'app.menu' );
@@ -13,21 +13,30 @@ define(
          */
 
         var itemsList = [
-                { url: '/manage/requests', title: 'Профiлi користувачiв' },
-                { url: '/manage/faq', title: 'Вiдповiдi на запитання' }
+                { url: '/requests', title: 'Профiлi користувачiв' },
+                { url: '/faq', title: 'Вiдповiдi на запитання' },
+                { url: '/logs', title: 'Журнали та звіти' },
+                { url: '/import', title: 'Імпорт до бази' }
             ],
-            Items = Backbone.Collection( itemsList ),
-            Login = Backbone.Layout.extend(
+            Menu = Backbone.Layout.extend(
             {
-                template: 'login',
+                template: 'menu',
                 events: {
-                    'click #submitLogin': 'login'
+                    //'click #submitLogin': 'login'
                 },
-                items: new Items(),
+                items: new Backbone.Collection( itemsList ),
                 serialize: function() {
-                    return this.items.toJSON();
+                    return { items: this.items.toJSON() };
+                },
+                afterRender: function() {
+                    console.log( this.$el.html());
+                },
+
+                activate: function( id ) {
+                    // get item el
+                    // activate
                 }
             }),
-            login = new Login();
-            return login;
+            menu = new Menu();
+            return menu;
     });

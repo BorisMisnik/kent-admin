@@ -12,7 +12,8 @@ define(
     // core
     'models/registry',
     'libs/router',
-    // windows
+    // locals
+    'views/menu',
     'views/login',
 //    'views/register',
 //    'views/upload',
@@ -22,7 +23,7 @@ define(
 //    'views/thanks',
 //    'views/feedback'
 ],
-function( registry, router, Login ) {
+function( registry, router, menu, Login ) {
 
     Backbone.log( 'App@', arguments );
 
@@ -56,13 +57,13 @@ function( registry, router, Login ) {
 
 
         // debug
-        var view;
-        registry.on( 'change:state', function() {
-            view = views[ registry.get( 'state' ) || defaultView ];
-        });
-        setInterval( function() {
-            if ( view ) view.render();
-        }, 1000 );
+//        var view;
+//        registry.on( 'change:state', function() {
+//            view = views[ registry.get( 'state' ) || defaultView ];
+//        });
+//        setInterval( function() {
+//            if ( view ) view.render();
+//        }, 1000 );
 
 
         // initial state
@@ -91,11 +92,17 @@ function( registry, router, Login ) {
         },
 
         beforeRender: function() {
-            this.log( 'render..', this.model.get( 'state' ));
+
+            // main page layout
+
+            // menu
+            this.insertView( '#menu', menu );
+            // page
+             this.log( 'render..', this.model.get( 'state' ));
             var view = views[ this.model.get( 'state' ) || defaultView ];
-            if ( !view )
-                throw new Error( 'Unknown state!' );
-            this.insertView( /*'#contents',*/ view );
+            if ( !view ) throw new Error( 'Unknown state!' );
+            this.insertView( '#box', view );
+
             // todo: fade elder
         },
         afterRender: function() {
