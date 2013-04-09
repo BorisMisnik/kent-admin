@@ -1,0 +1,76 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Control · Panel</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <!--[if lt IE 9]>
+    <script src="/assets/js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/assets/ico/apple-touch-icon-144-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/assets/ico/apple-touch-icon-114-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" sizes="72x72" href="/assets/ico/apple-touch-icon-72-precomposed.png">
+    <link rel="apple-touch-icon-precomposed" href="/assets/ico/apple-touch-icon-57-precomposed.png">
+    <link rel="shortcut icon" href="/assets/ico/favicon.png">
+
+    <script src="/assets/js/curl.js"></script>
+    <script>
+
+        // Loader
+
+        window.require = curl;
+        curl({
+            baseUrl: '/app',
+            pluginPath: '/assets/js/curl/plugin',
+            paths: {
+                jquery: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.9.1/jquery.min.js',
+                //jquery142: 'http://cdnjs.cloudflare.com/ajax/libs/jquery/1.4.2/jquery.min.js',
+                underscore: 'http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js',
+                backbone: 'http://cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js',
+                layoutmanager: 'http://cdnjs.cloudflare.com/ajax/libs/backbone.layoutmanager/0.8.5/backbone.layoutmanager.js',
+                modelbinder: 'http://cdnjs.cloudflare.com/ajax/libs/backbone.modelbinder/0.1.6/Backbone.ModelBinder.min.js',
+                hogan: 'http://cdnjs.cloudflare.com/ajax/libs/hogan.js/2.0.0/hogan.js',
+                swfobject: 'http://cdnjs.cloudflare.com/ajax/libs/swfobject/2.2/swfobject.js'
+            }
+        })
+        .next([
+            // engine
+            'js!jquery!order',
+            'js!underscore!order',
+            'js!backbone!order',
+            'js!layoutmanager!order',
+            'js!modelbinder!order',
+            'js!hogan',
+            'js!/assets/js/jquery.placeholder.min.js!order',
+
+            // frontend
+            'js!/assets/js/jquery.maskedinput.js!order',
+
+            // css
+            'css!/assets/css/bootstrap.css',
+            'css!/assets/css/bootstrap-responsive.css',
+            'css!/assets/css/main.css'
+        ])
+        .next([
+            // configure and
+            // run application
+            // assets/js/boot.js
+            'boot'
+        ])
+
+    </script>
+
+</head>
+
+<body data-spy="scroll" data-target=".bs-docs-sidebar">
+
+    <!-- Layout -->
+
+</body>
+</html>

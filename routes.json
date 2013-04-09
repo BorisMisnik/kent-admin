@@ -1,0 +1,75 @@
+[
+    {
+        "method": "post",
+        "url": "/auth/login",
+        "script": "./libs/login",
+        "handler": "login",
+        "auth": {
+            "roles": [ "admin" ],
+            "success": "/",
+            "fail": "/login"
+        }
+    },
+
+
+
+
+
+
+    {
+        "method": "get",
+        "url": "/auth/logout",
+        "script": "./libs/login",
+        "handler": "logout",
+        "auth": {
+            "logged": true,
+            "success": "/",
+            "fail": "/login"
+        }
+    },
+    {
+        "method": "post",
+        "url": "/auth/remind",
+        "script": "./libs/login",
+        "handler": "remind"
+    },
+    {
+        "method": "post",
+        "url": "/auth/signup",
+        "script": "./libs/login",
+        "handler": "signup"
+    },
+    {
+        "method": "get",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "getProfile"
+    },
+    {
+        "method": "post",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "setProfile"
+    },
+
+    {
+        "method": "post",
+        "url": "/feedback",
+        "script": "./libs/feedback",
+        "handler": "feedback"
+    },
+
+    {
+        "method": "get",
+        "url": "/main.html",
+        "script": "./libs/main",
+        "handler": "main"
+    }
+
+
+
+
+
+
+
+]
