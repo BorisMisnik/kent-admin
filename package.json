@@ -6,7 +6,7 @@
         "start": "node app"
     },
     "dependencies": {
-	"piezo-server": "https://github.com/piezo/piezo-server/tarball/master",
+        "async": "*",
         "express": "3.0.6",
         "colors": "*",
         "validator": "*"
