@@ -9,28 +9,43 @@ define(
         /**
          * Menu generator
          * todo: sync with server ater login, to show actual menu for current user
-         * @type {Array}
+         * (!) Singleton
          */
 
-        var itemsList = [
-                { url: '/requests', title: 'Профiлi користувачiв' },
-                { url: '/faq', title: 'Вiдповiдi на запитання' },
-                { url: '/logs', title: 'Журнали та звіти' },
-                { url: '/import', title: 'Імпорт до бази' }
-            ],
+        var items = new Backbone.Collection( [], {
+                model: Backbone.Model,
+                url: '/menu/items'
+            }),
             Menu = Backbone.Layout.extend(
             {
                 template: 'menu',
-                events: {
-                    //'click #submitLogin': 'login'
+                items: items,
+
+                initialize: function() {
+                    var self = this;
+                    // observe items changes
+                    self.items.on( 'sync', function() {
+                        self.render();
+                    });
+                    // wail for login
+                    user.on( 'change:authorized', function(){
+                        self.items.fetch();
+                    });
+                    // get current items
+                    self.items.fetch();
                 },
-                items: new Backbone.Collection( itemsList ),
+
                 serialize: function() {
                     return { items: this.items.toJSON() };
                 },
-                afterRender: function() {
-                    console.log( this.$el.html());
+
+                // Events
+
+                change: function( e ) {
+                    e.preventDefault();
                 },
+
+                // API
 
                 activate: function( id ) {
                     // get item el
@@ -40,3 +55,5 @@ define(
             menu = new Menu();
             return menu;
     });
+
+console.log( '- menu' );

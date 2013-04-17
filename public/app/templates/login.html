@@ -2,16 +2,34 @@
     <div class="content">
         <div class="row">
             <div class="login-form">
-                <h2>Login</h2>
+
+                <h2>Вхід</h2>
                 <form action="">
                     <fieldset>
-                        <div class="clearfix">
-                            <input type="text" id="username" name="username" placeholder="Username" value="{{ result }}">
+
+                        <div class="control-group {{#errors}}error{{/errors}}">
+
+                            <div class="controls">
+                                {{# errors.no_username }}
+                                <label class="control-label" for="username">Вкажіть ім'я</label>
+                                {{/ errors.no_username }}
+                                <input type="text" id="username" name="username" placeholder="Логін" value="{{ form.username }}">
+                            </div>
+                            <div class="controls">
+                                {{# errors.no_password }}
+                                <label class="control-label" for="password">Введіть пароль</label>
+                                {{/ errors.no_password }}
+                                <input type="password" id="password" name="password" placeholder="Пароль" value="{{ form.password }}">
+
+                                {{# errors.wrong_credentials }}
+                                <span class="help-inline">Неправильно введено логін або пароль. Спробуй ще раз.</span>
+                                {{/ errors.wrong_credentials }}
+
+                            </div>
                         </div>
-                        <div class="clearfix">
-                            <input type="password" id="password" name="password" placeholder="Password">
-                        </div>
-                        <button class="btn btn-primary" type="submit">Sign in</button>
+
+                        <button class="btn btn-primary submit" type="submit">Sign in</button>
+
                     </fieldset>
                 </form>
             </div>

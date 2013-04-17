@@ -1,18 +1,14 @@
 define(
     [
-        'libs/router',
+        'libs/app',
         'models/user',
         // css
         'css!/assets/css/login.css'
     ],
-    function( router, user ) {
+    function( app, user ) {
         Backbone.log( 'app.login' );
 
-        var errors = {
-                wrong_credentials: 'Неправильно введено логін або пароль. Спробуй ще раз.'
-            },
-
-            Model = Backbone.Model.extend({
+        var Model = Backbone.Model.extend({
                 defaults: {
                     username: '',
                     password: '',
@@ -25,35 +21,30 @@ define(
             {
                 template: 'login',
                 events: {
-                    'click #submitLogin': 'login'
+                    'click .submit': 'login'
                 },
                 model: new Model(),
 
                 initialize: function() {
+                    // already logged in
+                    user.on( 'logged', this.logged, this );
                 },
 
+                _errors: null,
                 serialize: function() {
-                    // prepare errors
-                    var data = { errors: [] };
-                    _.each( this._errors,
-                        function( val, key ) {
-                            data.errors.push( errors[ key ]);
-                        });
-                    // form values
-                    data.form = this.model.toJSON();
+                    var data = {
+                        errors: this._errors,
+                        form: this.model.toJSON()
+                    };
                     this.log( 'login form data:', data );
-
-                    //debug
-                    data.result = Math.random().toString( 16 ).substr( 2 );
-
                     return data;
                 },
-                afterRender: function() {
-                    // custom form fields
-                    //form.init();
+                beforeRender: function() {
+                    if ( user.isAutorized() )
+                        this.logged();
                 },
 
-                _errors: {},
+                // Events
 
                 login: function( e ) {
                     e.preventDefault();
@@ -67,26 +58,40 @@ define(
                         .set( 'password', password );
                     self._errors = {};
 
+                    // check values
+                    if ( !username || !password ) {
+                        self._errors = {
+                            no_username: !username,
+                            no_password: !password
+                        };
+                        return self.render();
+                    }
+
+                    debugger;
                     // query
                     user.login(
                         username, password,
                         function( err, res, fail ) {
                             if ( err ) return;
-                            if ( fail
-                                || !res
-                                || !res.authorized ) {
+                            if ( fail ) {
                                 // show error
                                 self._errors = fail;
-                                self.render();
                             }
                             else {
-                                window.location.href = '/main.html';
-                                //router.navigate( '/main.html' );
-                                //self.log( 'goto: #!/main' );
+                                self._errors = null;
+                                self.logged();
                             }
+                            self.render();
                         });
+                },
+
+                logged: function() {
+                    // * * *
+                    // switch application to `desktop` screen
+                    app.state( 'desktop' );
                 }
-            }),
-            login = new Login();
-            return login;
+            });
+            return Login;
     });
+
+console.log( '- login' );

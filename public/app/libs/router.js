@@ -11,67 +11,54 @@ define(
     [ '../models/registry' ],
     function( registry ) {
 
-
         /**
-         * Routes url
+         * Router
          */
-        var Router = Backbone.Router.extend(
-            {
-                routes: {
-                    '': 'login',
-                    '!/login': 'login',
-                    '!/register': 'register',
-                    '!/upload': 'upload',
-                    '!/webcam': 'webcam',
-                    '!/thanks': 'thanks',
-                    '!/remind': 'remind',
-                    '!/rules': 'rules',
-                    '!/feedback': 'feedback'
-                },
 
-                // handlers
+        // state routes
+        var router = new Backbone.Router(),
+            urls = { /* route: url */};
 
-                // login form
-                login: function() {
-                    registry.set({ state: 'login' });
-                },
-                // registration form
-                register: function() {
-                    registry.set({ state: 'register' });
-                },
-                // upload image form
-                upload: function() {
-                    registry.set({ state: 'upload' });
-                },
-                // webcam shot
-                webcam: function() {
-                    registry.set({ state: 'webcam' });
-                },
-                // remind password
-                remind: function() {
-                    registry.set({ state: 'remind' });
-                },
-                // thanks
-                thanks: function() {
-                    registry.set({ state: 'thanks' });
-                },
-                // rules
-                rules: function() {
-                    registry.set({ state: 'rules' });
-                },
-                // feedback form
-                feedback: function() {
-                    registry.set({ state: 'feedback' });
-                }
-            }),
-            router = new Router();
+        // add route
+        function addStateRoute ( route, state, url ) {
+            // urls
+            if ( route && urls[ state ])
+                Backbone.log( 'Url of given State already exists!' );
+            else
+                urls[ state ] = url || 'views/' + state;
+            // assign route
+            router.route( route, function() {
+                console.log( 'route change state from:', registry.get( 'state' ), 'to:', state );
+                registry.set( 'state', state );
+                // state changes handled in `app.js` `initialize()`
+            });
+        }
 
-        // init
 
+        // Init
+
+//        // add routes
+//        Object.keys( routes || {})
+//            .forEach( function( url ) {
+//                addStateRoute( url, routes[ url ]);
+//            });
+
+        // init router
         Backbone.history.fragment = null;
         Backbone.history.start(); // { pushState: true });
-        //router.navigate( location.hash, true );
 
+
+        // API
+
+        router.initUrl = function() {
+            var current = Backbone.history.fragment;
+            Backbone.history.fragment = null;
+            router.navigate( current, { trigger: true });
+        };
+        router.addStateRoute = addStateRoute;
+        router.getUrl = function( route ) {
+            return urls[ route ];
+        };
         return router;
 
     });

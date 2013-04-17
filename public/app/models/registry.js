@@ -19,7 +19,7 @@ define(
         var Registry = Backbone.Model.extend({
                 defaults: {
                     // Application State
-                    state: 'login'
+                    // state: 'login'
                 }
             }),
             registry = new Registry();

@@ -1,7 +1,7 @@
 [
     {
         "//": "Login made here ( get `username` and `password` from PORT or GET )",
-        "method": "post",
+        "method": "get",
         "url": "/account/login",
         "script": "./libs/account",
         "handler": "login",
@@ -17,17 +17,8 @@
     },
 
 
-
-
     {
-        "//": "Get user",
-        "method": "get",
-        "url": "/user",
-        "script": "./libs/account",
-        "handler": "user"
-    },
-    {
-        "//": "Get user info + Check is authorized ( and get user info, with role value )",
+        "//": "Check is authorized ( and get user info, with role value )",
         "method": "get",
         "url": "/account",
         "script": "./libs/account",
@@ -42,17 +33,7 @@
         "handler": "signup"
     },
     {
-        "//": "Update single user profile ( card )",
-        "method": "post",
-        "url": "/account/profile",
-        "script": "./libs/account",
-        "handler": "updateProfile",
-        "auth": { "logged": true }
-    },
-
-
-    {
-        "//": "TODO: Get account information ( id or current )",
+        "//": "Get account information ( id or current )",
         "method": "get",
         "url": "/account/id/:id",
         "script": "./libs/account",
@@ -60,7 +41,7 @@
         "auth": { "roles": [ "operator", "admin" ]}
     },
     {
-        "//": "TODO: Update account information ( id or current )",
+        "//": "Update account information ( id or current )",
         "method": "post",
         "url": "/account/id/:id",
         "script": "./libs/account",
@@ -68,14 +49,6 @@
         "auth": { "roles": [ "operator", "admin" ]}
     },
 
-
-    {
-        "//": "Feedback form",
-        "method": "post",
-        "url": "/feedback",
-        "script": "./libs/feedback",
-        "handler": "feedback"
-    },
 
 
     {
@@ -105,7 +78,58 @@
         "method": "get",
         "url": "/app/desktop.admin.js",
         "auth": { "roles": [ "admin" ]}
+    },
+
+
+
+
+
+
+    {
+        "method": "get",
+        "url": "/auth/logout",
+        "script": "./libs/login",
+        "handler": "logout",
+        "auth": {
+            "logged": true,
+            "success": "/",
+            "fail": "/login"
+        }
+    },
+    {
+        "method": "post",
+        "url": "/auth/remind",
+        "script": "./libs/login",
+        "handler": "remind"
+    },
+
+    {
+        "method": "get",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "getProfile"
+    },
+    {
+        "method": "post",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "setProfile"
+    },
+
+    {
+        "method": "post",
+        "url": "/feedback",
+        "script": "./libs/feedback",
+        "handler": "feedback"
+    },
+
+    {
+        "method": "get",
+        "url": "/main.html",
+        "script": "./libs/main",
+        "handler": "main"
     }
+
 
 
 
