@@ -6,6 +6,7 @@
         "start": "node app"
     },
     "dependencies": {
+        "piezo-server": "*",
         "async": "*",
         "express": "3.0.6",
         "colors": "*",
