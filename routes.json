@@ -1,0 +1,115 @@
+[
+    {
+        "//": "Login made here ( get `username` and `password` from PORT or GET )",
+        "method": "post",
+        "url": "/account/login",
+        "script": "./libs/account",
+        "handler": "login",
+        "auth": { "login": true }
+    },
+    {
+        "//": "Login made here ( get `username` and `password` from PORT or GET )",
+        "method": "get",
+        "url": "/account/logout",
+        "script": "./libs/account",
+        "handler": "logout",
+        "auth": { "logged": true }
+    },
+
+
+
+
+    {
+        "//": "Get user",
+        "method": "get",
+        "url": "/user",
+        "script": "./libs/account",
+        "handler": "user"
+    },
+    {
+        "//": "Get user info + Check is authorized ( and get user info, with role value )",
+        "method": "get",
+        "url": "/account",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "logged": true }
+    },
+    {
+        "//": "Sign up user (!)",
+        "method": "post",
+        "url": "/account/signup",
+        "script": "./libs/account",
+        "handler": "signup"
+    },
+    {
+        "//": "Update single user profile ( card )",
+        "method": "post",
+        "url": "/account/profile",
+        "script": "./libs/account",
+        "handler": "updateProfile",
+        "auth": { "logged": true }
+    },
+
+
+    {
+        "//": "TODO: Get account information ( id or current )",
+        "method": "get",
+        "url": "/account/id/:id",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "//": "TODO: Update account information ( id or current )",
+        "method": "post",
+        "url": "/account/id/:id",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+
+
+    {
+        "//": "Feedback form",
+        "method": "post",
+        "url": "/feedback",
+        "script": "./libs/feedback",
+        "handler": "feedback"
+    },
+
+
+    {
+        "//": "Generate menu items list ( by role of user )",
+        "method": "get",
+        "url": "/menu/items",
+        "script": "./libs/menu",
+        "handler": "items",
+        "auth": { "logged": true }
+    },
+
+
+    {
+        "//": "Switch the Desktop ( will redirect to `desktop.*.js )",
+        "method": "get",
+        "url": "/desktop.js",
+        "script": "./libs/desktop",
+        "handler": "desktop",
+        "auth": { "logged": true }
+    },
+    {
+        "method": "get",
+        "url": "/app/desktop.operator.js",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "method": "get",
+        "url": "/app/desktop.admin.js",
+        "auth": { "roles": [ "admin" ]}
+    }
+
+
+
+
+
+
+]

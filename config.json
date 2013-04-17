@@ -1,0 +1,50 @@
+{
+    "defaults": {
+        "mongodb": {
+            "host": "localhost",
+            "port": 27017,
+            "database": "test1",
+            "routes": []
+        }
+    },
+    "http": {
+        "port": 8000,
+        "static": [
+            "./assets",
+            "./public"
+        ]
+    },
+    "mail": {
+        "service": "Mailgun",
+        "proto": "smtp",
+        "user": "api",
+        "password": "key-aaaaa",
+        "from": {
+            "email": "test@mail.com",
+            "title": "Test Mailing"
+        }
+    },
+    "auth": {
+        "collection": "accounts"
+    },
+    "cards": {
+        "collection": "cards"
+    },
+    "lists": {
+        "host": "localhost",
+        "port": 27017,
+        "database": "test1",
+        "collection": "lists"
+    },
+    "log": {
+        "level": "debug",
+        "mongodb": {
+            "collection": "logs"
+        },
+        "console": true,
+        "file": {
+            "level": "info",
+            "path": "./pro.log"
+        }
+    }
+}
