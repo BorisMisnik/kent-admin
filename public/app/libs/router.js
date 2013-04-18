@@ -27,10 +27,12 @@ define(
             else
                 urls[ state ] = url || 'views/' + state;
             // assign route
+            console.log( 'route url:', route );
             router.route( route, function() {
                 console.log( 'route change state from:', registry.get( 'state' ), 'to:', state );
                 registry.set( 'state', state );
-                // state changes handled in `app.js` `initialize()`
+                // app: state changes handled in `app.js` `initialize()`
+                // see: libs/app.js
             });
         }
 
@@ -50,7 +52,7 @@ define(
 
         // API
 
-        router.initUrl = function() {
+        router.currentUrl = function() {
             var current = Backbone.history.fragment;
             Backbone.history.fragment = null;
             router.navigate( current, { trigger: true });

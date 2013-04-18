@@ -1,9 +1,10 @@
 define(
     [
         'libs/router',
+        'models/registry',
         'models/user'
     ],
-    function( router, user ) {
+    function( router, registry, user ) {
         Backbone.log( 'app.menu' );
 
         /**
@@ -25,10 +26,24 @@ define(
                     var self = this;
                     // observe items changes
                     self.items.on( 'sync', function() {
+                        // add routes
+                        _.each( this.items.toJSON(),
+                            function( item ) {
+                                console.log( 'item', item );
+                                router.addStateRoute( '!' + item.url, item.state, item.path );
+                            });
+                        // show items
                         self.render();
-                    });
+                    }, this );
+
                     // wail for login
-                    user.on( 'change:authorized', function(){
+//                    user.on( 'change:authorized', function(){
+//                        self.items.fetch();
+//                    });
+                    user.on( 'logged', function(){
+                        self.items.fetch();
+                    });
+                    user.on( 'logout', function(){
                         self.items.fetch();
                     });
                     // get current items
@@ -36,7 +51,8 @@ define(
                 },
 
                 serialize: function() {
-                    return { items: this.items.toJSON() };
+                    var items = this.items.toJSON();
+                    return { items: items };
                 },
 
                 // Events
@@ -47,9 +63,10 @@ define(
 
                 // API
 
-                activate: function( id ) {
-                    // get item el
-                    // activate
+                activate: function( state ) {
+//                    var activeItem = state || registry.get( 'state' ),
+//                        el = this.$( '[data-state='+ activeItem +']' );
+                    // todo: activate current item in menu
                 }
             }),
             menu = new Menu();

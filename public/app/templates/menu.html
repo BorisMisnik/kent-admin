@@ -1,7 +1,7 @@
 <!-- Menu -->
 <ul class="nav">
     {{# items }}
-    <li {{# active }}class="active"{{/ active }}>
+    <li {{# active }}class="active"{{/ active }} data-state="{{ state }}">
         <a href="#!{{ url }}">{{ title }}</a>
     </li>
     {{/ items }}

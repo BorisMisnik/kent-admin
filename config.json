@@ -17,10 +17,10 @@
     "mail": {
         "service": "Mailgun",
         "proto": "smtp",
-        "user": "api",
-        "password": "key-aaaaa",
+        "user": "postmaster@kent.com.ua",
+        "password": "8b969bz3g407",
         "from": {
-            "email": "test@mail.com",
+            "email": "postmaster@kent.com.ua",
             "title": "Test Mailing"
         }
     },

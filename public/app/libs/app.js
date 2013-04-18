@@ -59,8 +59,6 @@ function( registry, router, menu ) {
             self.model.on( 'change:state',
                 function( model, state, url ) {
 
-                    debugger;
-
                     // switch to exists view
                     if ( views[ state ]) {
                         self.render();

@@ -27,7 +27,8 @@ define(
 
                 initialize: function() {
                     // already logged in
-                    user.on( 'logged', this.logged, this );
+                    user.on( 'logged', this.onLogged, this );
+                    user.on( 'logout', this.onLogout, this );
                 },
 
                 _errors: null,
@@ -41,7 +42,7 @@ define(
                 },
                 beforeRender: function() {
                     if ( user.isAutorized() )
-                        this.logged();
+                        this.onLogged();
                 },
 
                 // Events
@@ -67,7 +68,6 @@ define(
                         return self.render();
                     }
 
-                    debugger;
                     // query
                     user.login(
                         username, password,
@@ -79,16 +79,23 @@ define(
                             }
                             else {
                                 self._errors = null;
-                                self.logged();
+                                self.onLogged();
                             }
                             self.render();
                         });
                 },
 
-                logged: function() {
+                onLogged: function() {
                     // * * *
                     // switch application to `desktop` screen
-                    app.state( 'desktop' );
+                    //app.state( 'desktop' );
+                    Backbone.log( 'login.onLogged' );
+                    this.$el.hide();
+                },
+                onLogout: function() {
+                    Backbone.log( 'login.onLogout' );
+                    this.$el.show();
+                    this.render();
                 }
             });
             return Login;

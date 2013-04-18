@@ -9,9 +9,10 @@
 
 exports.desktop =
     function( req, res ) {
+        console.log( '\n\ndesktop:', req.user );
         if ( !req.user || !req.user.role )
             return res.send( 403 );
         // switch to desktop
-        console.log( 'desktop:', req.user.role );
+        // console.log( '\n\ndesktop:', req.user.role );
         res.redirect( '/app/desktop.' + req.user.role + '.js' );
     };

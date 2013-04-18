@@ -7,14 +7,26 @@
  * @version 0.0.1
  */
 
-var server = require( 'piezo-server' ),
+var
+    // engine
+    server = require( 'piezo-server' ),
     cards = server.libs.cards,
     auth = server.libs.auth,
+    mail = server.libs.mail,
     check = server.utils.check,
     filter = server.utils.filter,
     ObjectID = server.utils.ObjectID,
-    fs = require('fs');
+    // libs
+    async = require( 'async' ),
+    hogan = require( 'hogan.js' ),
+    fs = require( 'fs' );
 
+// todo: move to the database
+var
+    // mail templates
+    mailing = require( '../mailing.json' ),
+    // roles order is count! [ first .. last ] as [ restricted .. full admin ]
+    roles = [ 'visitor', 'operator', 'admin' ];
 
 exports.login =
     function( req, res ) {
@@ -34,6 +46,57 @@ exports.remind =
     function( req, res ) {
         console.log( 'remind' );
         // todo: (!)
+
+        cards.get(
+            { email: req.body.email },
+            function( err, card ) {
+                if ( err ) return res.send({ error: true, database: true });
+                if ( !card ) return res.send({ error: true, does_not_exists: true });
+                if ( !card.account_id ) return res.send({ error: true, no_account: true });
+
+                // random password
+                var password = Math.random().toString( 16 ).substr( 2 ).toLowerCase();
+                auth.update( card.account_id,
+                    { password: password },
+                    function( err, usr ) {
+
+                        if ( err ) return res.send({ error: true, account_update: true });
+                        res.send({ success: true });
+
+                        // compose mail
+
+                        var opts = mailing.remind;
+                        if ( opts && opts.template ) {
+                            // render mail template
+                            res.render(
+                                opts.template,
+                                {
+                                    name: card.name,
+                                    password: password
+                                },
+                                function( err, text ) {
+                                    console.log( 'render mail:', text );
+                                    if ( !err && text ) {
+
+                                        // send mail
+                                        mail.send(
+                                            {
+                                                from: opts.from,
+                                                to: card.name +' <'+ card.email +'>',
+                                                subject: opts.subject,
+                                                body: text
+                                            },
+                                            function( err, sent ) {
+                                                if ( err )
+                                                    console.log( 'Mail error'.red.bold, err );
+                                            });
+                                    }
+                                });
+                        }
+
+
+                    });
+            });
     };
 
 exports.signup =
@@ -93,6 +156,38 @@ exports.signup =
                                         doc.success = true;
                                         delete doc.photo;   // remove image from response
                                         res.send( doc );
+
+                                        // compose mail
+
+                                        // todo: `mail.send( { from, to, subject }, opts.template, { name: profile.name }, callback )`
+
+                                        var opts = mailing.signup;
+                                        if ( opts && opts.template ) {
+                                            // render mail template
+                                            res.render(
+                                                opts.template,
+                                                {
+                                                    name: profile.name
+                                                },
+                                                function( err, text ) {
+                                                    console.log( 'render mail:', text );
+                                                    if ( !err && text ) {
+
+                                                        // send mail
+                                                        mail.send(
+                                                            {
+                                                                from: opts.from,
+                                                                to: doc.name +' <'+ doc.email +'>',
+                                                                subject: opts.subject,
+                                                                body: text
+                                                            },
+                                                            function( err, sent ) {
+                                                                if ( err )
+                                                                    console.log( 'Mail error'.red.bold, err );
+                                                            });
+                                                    }
+                                                });
+                                        }
                                     });
                             });
 
@@ -194,6 +289,96 @@ exports.updateProfile = function( req, res ) {
                 });
         });
 };
+
+
+// Lists
+
+exports.accountsList =
+    function( req, res ) {
+
+        //var _roles = roles.slice( 0, roles.indexOf( req.user.role ));
+        // if ( !_roles.length ) return res.send( [] );     // no users of self-available roles
+
+        // get users
+        auth.users(
+            // todo: get users with available roles only
+            {},
+            { limit: 25, skip: 0 },
+            function( err, users ) {
+                console.log( 'Users:', users );
+                if ( err )
+                    return res.send({ error: true, database: true });
+                if ( !users || !users.length )
+                    return res.send( [] );
+
+                // call async
+                var queue = [];
+
+                // gather cards
+                // todo: make gathering in 2 database queries only (!)
+
+
+                // gather cards
+                users.forEach( function( user ) {
+                    queue.push(
+                        // query database
+                        function gather( next ) {
+                            cards.get(
+                                {
+                                    account_id: cards.ObjectID( user._id ),
+                                    type: 'profile'
+                                },
+                                {
+                                    limit: 10
+                                    //fields: [ 'account_id', 'active', 'name', 'day','month','year', 'phone' ]
+                                },
+                                function( err, account ) {
+                                    if ( err ) next( err );
+                                    else
+                                    if ( !account ) next( new Error( 'Not exists account' ));
+                                    else
+                                        next( null, account );
+                                });
+                        })
+                });
+
+                // results
+                async.series( queue, function( err, results ) {
+                    console.log( 'users. gather cards results:\n', err, results );
+
+                    debugger;
+                    if ( err ) {
+                        console.log( 'Database error'.red.bold, err );
+                        res.send({ error: true, database: err });
+                        return;
+                    }
+                    if ( !results || !results.length )
+                        return res.send( users );
+
+                    // add card to user record ( each )
+                    results.forEach( function( card ) {
+                        users.forEach( function( user ) {
+                            // find linked user ( by card's `account_id` )
+                            if ( ''+ user._id == ''+ card.account_id )
+                                user.profile = card;
+                        });
+                    });
+
+                    console.log( 'results:', users );
+
+                    // results
+                    res.send( users );
+                });
+            });
+    };
+
+exports.permission =
+    function( req, res ) {
+        var id = req.params.id,
+            action = req.params.action;
+        console.log( 'permission', id, action );
+        res.send({ success: true });
+    };
 
 
 // Validators

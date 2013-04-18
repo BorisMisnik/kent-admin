@@ -7,17 +7,57 @@
  * @version 0.0.1
  */
 
+/**
+ * Admin panel main menu items
+ */
+var menu = {
+        operator: [
+            {
+                url: '/accounts',
+                title: 'Профiлi користувачiв',
+                state: 'accounts'
+                //path: '/accounts.js'
+            },
+            {
+                url: '/requests',
+                title: 'Вiдповiдi на запитання',
+                state: 'requests'
+                //path: '/requests.js'
+            }
+        ],
+        admin: [
+            {
+                url: '/accounts',
+                title: 'Профiлi користувачiв',
+                state: 'accounts'
+                //path: '/accounts.js'
+            },
+            {
+                url: '/requests',
+                title: 'Вiдповiдi на запитання',
+                state: 'requests'
+                //path: '/requests.js'
+            },
+            {
+                url: '/logs',
+                title: 'Журнали та звіти',
+                state: 'logs'
+            },
+            {
+                url: '/import',
+                title: 'Імпорт до бази',
+                state: 'imports'
+            }
+        ]
+    };
+
 exports.items =
     function( req, res ) {
 
         // todo: authorize
         if ( !req.user )
-            res.send([]);
-        else
-            res.send([
-                { url: '/requests', title: 'Профiлi користувачiв' },
-                { url: '/faq', title: 'Вiдповiдi на запитання' },
-                { url: '/logs', title: 'Журнали та звіти' },
-                { url: '/import', title: 'Імпорт до бази' }
-            ]);
+            return res.send([]);
+
+        var items = menu[ req.user.role ];
+        res.send( items || []);
     };

@@ -1,0 +1,126 @@
+{{# list.length }}
+
+    <h3>Перелік реестрацій</h3>
+
+    {{# filters }}
+    <!-- Filters -->
+    <ul class="nav nav-pills">
+
+        {{# activated }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a href="#!/accounts/filter/activated">
+                Активні {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ activated }}
+
+        {{# deactivated }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a href="#!/accounts/filter/deactivated">
+                Неактивні {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ deactivated }}
+
+        {{# imported }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a href="#!/accounts/filter/imported">
+                Зайшли за картками {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ imported }}
+
+    </ul>
+    {{/ filters }}
+
+    <!-- List -->
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <!--<th>Дата</th>-->
+            <th>Активований</th>
+            <th>П.I.Б.</th>
+            <th>Дата народження</th>
+            <th>Телефон</th>
+            <th>Фото</th>
+            <th>Дія</th>
+        </tr>
+        </thead>
+
+        <tbody>
+
+        {{# list }}
+        <tr>
+            <td>
+                {{# active }}✔{{/ active }}
+                {{^ active }}<i>Ні</i>{{/ active }}
+            </td>
+            <td>{{ profile.name }}</td>
+            <td>{{ profile.day }}-{{ profile.month }}-{{ profile.year }}</td>
+            <td>{{ profile.phone }}</td>
+            <td>
+                {{# profile.photo }}
+                    <!-- todo: Passport image -->
+                    <!--<a href="#" onclick="javascript:window.open( '/uploads/{photo}', 'Фото документiв', 'width=800,height=600,location=no,toolbar=no,menubar=no,directories=no,status=no' ); return false;">Фото</a>-->
+                    <img src="{{ profile.photo }}" data-action="photo" data-account="{{ _id }}" style="cursor: pointer" width="40" />
+                {{/ profile.photo }}
+                {{^ profile.photo }}
+                    <i>Немає</i>
+                {{/ profile.photo }}
+            </td>
+            <td class="right">
+                <!-- Actions -->
+                <div class="btn-group">
+
+                    <a class="btn {{^ buttons.change }}hide{{/ buttons.change }}"
+                       data-action="change" data-account="{{ _id }}">Змінити</a>
+
+                    <a class="btn btn-success {{^ buttons.allow }}hide{{/ buttons.allow }}"
+                        data-action="allow" data-account="{{ _id }}">Дозволити</a>
+
+                    <a class="btn btn-danger deny {{^ buttons.deny }}hide{{/ buttons.deny }}"
+                       data-action="deny" data-account="{{ _id }}">Заборонити</a>
+
+                </div>
+            </td>
+        </tr>
+        {{/ list }}
+
+    </table>
+
+    {{# paginator }}
+    <!-- Pager -->
+    <ul class="pager">
+
+        {{# prev }}
+        <li class="previous">
+            <a href="/accounts/page/{{ prev }}">
+                &larr; Попередні
+            </a>
+        </li>
+        {{/ prev }}
+
+        {{# page }}
+        <li class="next">
+            <strong>
+                Сторiнка {{ page }}
+            </strong>
+        </li>
+        {{/ page }}
+
+        {{# next }}
+        <li class="next">
+            <a href="/accounts/page/{{ next }}">
+                Наступні &rarr;
+            </a>
+        </li>
+        {{/ next }}
+
+    </ul>
+    {{/ paginator }}
+
+{{/ list.length }}
+{{^ list }}
+    <h3>Немає записів</h3>
+{{/ list }}
+
