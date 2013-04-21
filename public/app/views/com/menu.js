@@ -1,3 +1,6 @@
+
+// singleton
+
 define(
     [
         'libs/router',
@@ -69,6 +72,7 @@ define(
                     // todo: activate current item in menu
                 }
             }),
+            // singleton
             menu = new Menu();
             return menu;
     });

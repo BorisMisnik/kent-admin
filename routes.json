@@ -25,7 +25,6 @@
 
 
 
-
     {
         "//": "Get user",
         "method": "get",
@@ -58,12 +57,29 @@
     },
 
 
+
     {
         "//": "Get accounts list",
         "method": "get",
         "url": "/accounts",
         "script": "./libs/account",
         "handler": "accountsList",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "//": "Get accounts list ( with query parameters )",
+        "method": "post",
+        "url": "/accounts",
+        "script": "./libs/account",
+        "handler": "accountsList",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "//": "Get accounts list ( with query parameters )",
+        "method": "get",
+        "url": "/accounts/totals/:type?",
+        "script": "./libs/account",
+        "handler": "totals",
         "auth": { "roles": [ "operator", "admin" ]}
     },
     {
@@ -83,9 +99,17 @@
         "auth": { "roles": [ "operator", "admin" ]}
     },
     {
+        "//": "Get account Photo ( base64 )",
+        "method": "get",
+        "url": "/accounts/id/:id/photo",
+        "script": "./libs/account",
+        "handler": "photo",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
         "//": "Allow/deny account",
         "method": "get",
-        "url": "/accounts/id/:id/:action",
+        "url": "/accounts/id/:id/permission/:action",
         "script": "./libs/account",
         "handler": "permission",
         "auth": { "roles": [ "operator", "admin" ]}

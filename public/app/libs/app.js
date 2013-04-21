@@ -13,7 +13,7 @@ define(
     'models/registry',
     'libs/router',
     // locals
-    'views/menu'
+    'views/com/menu'
 ],
 function( registry, router, menu ) {
 

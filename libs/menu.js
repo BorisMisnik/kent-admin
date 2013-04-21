@@ -47,6 +47,11 @@ var menu = {
                 url: '/import',
                 title: 'Імпорт до бази',
                 state: 'imports'
+            },
+            {
+                url: '/cluster',
+                title: 'Кластер серверів',
+                state: 'cluster'
             }
         ]
     };
@@ -58,6 +63,7 @@ exports.items =
         if ( !req.user )
             return res.send([]);
 
+        console.log( 'user:', req.user );
         var items = menu[ req.user.role ];
         res.send( items || []);
     };

@@ -1,38 +1,39 @@
-{{# list.length }}
 
-    <h3>Перелік реестрацій</h3>
+<h3>Профiлi користувачiв</h3>
 
     {{# filters }}
     <!-- Filters -->
+
     <ul class="nav nav-pills">
 
-        {{# activated }}
+        {{# activate }}
         <li {{# active }}class="active"{{/ active }}>
-            <a href="#!/accounts/filter/activated">
+            <a data-filter="activate" href="#">
                 Активні {{# count }}({{ count }}){{/ count }}
             </a>
         </li>
-        {{/ activated }}
+        {{/ activate }}
 
-        {{# deactivated }}
+        {{# inactive }}
         <li {{# active }}class="active"{{/ active }}>
-            <a href="#!/accounts/filter/deactivated">
+            <a data-filter="inactive"href="#">
                 Неактивні {{# count }}({{ count }}){{/ count }}
             </a>
         </li>
-        {{/ deactivated }}
+        {{/ inactive }}
 
-        {{# imported }}
+        {{# import }}
         <li {{# active }}class="active"{{/ active }}>
-            <a href="#!/accounts/filter/imported">
-                Зайшли за картками {{# count }}({{ count }}){{/ count }}
+            <a data-filter="import" href="#">
+                Імпортовані {{# count }}({{ count }}){{/ count }}
             </a>
         </li>
-        {{/ imported }}
+        {{/ import }}
 
     </ul>
     {{/ filters }}
 
+    {{# list.length }}
     <!-- List -->
     <table class="table table-striped">
         <thead>
@@ -43,17 +44,17 @@
             <th>Дата народження</th>
             <th>Телефон</th>
             <th>Фото</th>
-            <th>Дія</th>
+            <th class="center">Дія</th>
         </tr>
         </thead>
 
         <tbody>
 
         {{# list }}
-        <tr>
+        <tr data-item="{{ _id }}">
             <td>
-                {{# active }}✔{{/ active }}
-                {{^ active }}<i>Ні</i>{{/ active }}
+                <span data-active="true" class="{{^ active }}hide{{/ active }}">✔</span>
+                <span data-active="false" class="{{# active }}hide{{/ active }}"><i>Ні</i></span>
             </td>
             <td>{{ profile.name }}</td>
             <td>{{ profile.day }}-{{ profile.month }}-{{ profile.year }}</td>
@@ -69,18 +70,31 @@
                 {{/ profile.photo }}
             </td>
             <td class="right">
+
                 <!-- Actions -->
-                <div class="btn-group">
-
-                    <a class="btn {{^ buttons.change }}hide{{/ buttons.change }}"
+                <div data-group="review" class="btn-group {{^ buttons.review }}hide{{/ buttons.review }}">
+                    <a class="btn"
                        data-action="change" data-account="{{ _id }}">Змінити</a>
-
-                    <a class="btn btn-success {{^ buttons.allow }}hide{{/ buttons.allow }}"
+                    <a class="btn btn-success"
                         data-action="allow" data-account="{{ _id }}">Дозволити</a>
-
-                    <a class="btn btn-danger deny {{^ buttons.deny }}hide{{/ buttons.deny }}"
+                    <a class="btn btn-danger deny"
                        data-action="deny" data-account="{{ _id }}">Заборонити</a>
+                </div>
 
+                <!-- Actions -->
+                <div data-group="allow" class="btn-group {{^ buttons.allow }}hide{{/ buttons.allow }}">
+                    <a class="btn"
+                       data-action="change" data-account="{{ _id }}">Змінити</a>
+                    <a class="btn btn-success"
+                       data-action="allow" data-account="{{ _id }}">Дозволити</a>
+                </div>
+
+                <!-- Actions -->
+                <div data-group="deny" class="btn-group {{^ buttons.deny }}hide{{/ buttons.deny }}">
+                    <a class="btn"
+                       data-action="change" data-account="{{ _id }}">Змінити</a>
+                    <a class="btn btn-danger deny"
+                       data-action="deny" data-account="{{ _id }}">Заборонити</a>
                 </div>
             </td>
         </tr>
@@ -119,8 +133,115 @@
     </ul>
     {{/ paginator }}
 
-{{/ list.length }}
-{{^ list }}
-    <h3>Немає записів</h3>
-{{/ list }}
+    {{/ list.length }}
 
+{{^ list.length }}
+<h3>Немає записів</h3>
+{{/ list.length }}
+
+
+
+    <!-- Modal: Photo -->
+    <div id="modalPhoto" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <!--<div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 class="myModalLabel">Photo preview:</h3>
+        </div>-->
+        <div class="modal-body">
+
+            <div class="progress progress-striped active">
+                <div class="bar" style="width: 100%;"></div>
+            </div>
+
+            <img id="modalPhotoImage" width="100%" class="hide" />
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+        </div>
+    </div>
+
+    <!-- Modal: Profile form -->
+    <div id="modalProfile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Profile Form:</h3>
+        </div>
+        <div class="modal-body">
+
+            <form id="modalProfileForm" class="form-horizontal" >
+
+                <!-- name -->
+                <div class="control-group">
+                    <label class="control-label" for="name">П. I. Б.</label>
+                    <div class="controls">
+                        <input type="text" id="name" name="name" placeholder="П. I. Б.">
+                    </div>
+                </div>
+
+                <!-- phone -->
+                <div class="control-group">
+                    <label class="control-label" for="phone">Мобiльний телефон</label>
+                    <div class="controls">
+                        <input type="text" id="phone" name="phone" placeholder="0 (00) 000-00-00">
+                    </div>
+                </div>
+
+                <!-- birth date -->
+                <div class="control-group">
+                    <label class="control-label" for="day">День народження</label>
+                    <div class="controls">
+                        <input type="text" id="day" name="day" placeholder="День">
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="month">Мiсяць</label>
+                    <div class="controls">
+                        <select id="month" name="month" >
+                            <option value="Місяць" disabled>Місяць</option>
+                            <option value="0">Січень</option>
+                            <option value="1">Лютий</option>
+                            <option value="2">Березень</option>
+                            <option value="3">Квітень</option>
+                            <option value="4">Травень</option>
+                            <option value="5">Червень</option>
+                            <option value="6">Липень</option>
+                            <option value="7">Серпень</option>
+                            <option value="8">Вересень</option>
+                            <option value="9">Жовтень</option>
+                            <option value="10">Листопад</option>
+                            <option value="11">Грудень</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="year">Рiк</label>
+                    <div class="controls">
+                        <input type="text" id="year" name="year" placeholder="0000">
+                    </div>
+                </div>
+
+                <!-- email -->
+                <div class="control-group">
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                        <input type="text" id="email" name="email" placeholder="Email">
+                    </div>
+                </div>
+
+                <!-- password -->
+                <div class="control-group">
+                    <label class="control-label" for="password">Password</label>
+                    <div class="controls">
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Закрити</button>
+            <button id="submitForm" class="btn btn-primary">Зберегти</button>
+        </div>
+    </div>

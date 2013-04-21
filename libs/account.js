@@ -299,6 +299,9 @@ exports.accountsList =
         //var _roles = roles.slice( 0, roles.indexOf( req.user.role ));
         // if ( !_roles.length ) return res.send( [] );     // no users of self-available roles
 
+        var limit = req.body.limit,
+            skip = req.body.skip;
+
         // get users
         auth.users(
             // todo: get users with available roles only
@@ -372,12 +375,102 @@ exports.accountsList =
             });
     };
 
+exports.totals =
+    function( req, res ) {
+        var type = req.params.type;
+        console.log( 'totals:', type );
+        // async
+        var queue = [];
+        // activate
+        queue.push( function( next ) {
+            auth.count({ active: true }, next );
+        });
+        // inative
+        queue.push( function( next ) {
+            auth.count({ active: { $ne: true }}, next );
+        });
+        // imported
+        queue.push( function( next ) {
+            auth.count({ import: true }, next );
+        });
+        // call
+        async.parallel( queue,
+            function( err, total ) {
+                if ( err ) {
+                    console.log( 'Database error'.red.bold, err );
+                    res.send({ error: true, database: true });
+                    return;
+                }
+                res.send({
+                    success: true,
+                    activate: total.shift(),
+                    inactive: total.shift(),
+                    import: total.shift()
+                });
+            })
+    };
+
+exports.photo =
+    function( req, res ) {
+        var id = req.params.id;
+        cards.get(
+            {
+                account_id: ObjectID( id ),
+                type: 'profile'
+            }, {},
+            function( err, card ) {
+                if ( err ) {
+                    console.log( 'Database error'.red.bold, err );
+                    res.send({ error: true, database: true });
+                    return;
+                }
+                if ( !card )
+                    return res.send({ error: true, does_not_exists: true });
+                res.send({
+                    success: true,
+                    photo: card.photo
+                });
+            });
+    };
+
 exports.permission =
     function( req, res ) {
         var id = req.params.id,
             action = req.params.action;
+
         console.log( 'permission', id, action );
-        res.send({ success: true });
+        auth.byId( id, function( err, usr ) {
+            // args
+            if ( err ) {
+                console.log( 'Database error'.red.bold, err );
+                res.send({ error: true, database: true, while_get_user: true });
+                return;
+            }
+            if ( !usr ) return res.send({ error: true, does_not_exists: true });
+
+            // values
+            var data = { review: true };
+            if ( 'allow' == action )
+                data.active = true;
+            else
+            if ( 'deny' == action )
+                data.active = false;
+            else
+                return res.send({ error: true, bad_action: true });
+
+            // update
+            auth.update( id, data,
+                function( err, changed ) {
+                    console.log( 'updated:', changed, data );
+                    if ( err ) {
+                        console.log( 'Database error'.red.bold, err );
+                        res.send({ error: true, database: true, while_update: true });
+                        return;
+                    }
+                    res.send({ success: true, active: data.active });
+                })
+
+        });
     };
 
 
@@ -502,6 +595,8 @@ function normalizeProfile( fields, callback )
 {
     if ( !callback ) return;
 
+    console.log( 'passed:', fields );
+
     var form = {
             name: String( fields.name || '' ),
             day: parseInt( fields.day ) || 1,
@@ -517,7 +612,7 @@ function normalizeProfile( fields, callback )
         },
         errors = {};
 
-    //console.log( 'parsed:', form );
+    console.log( 'parsed:', form );
 
     // name
     if ( !form.name
