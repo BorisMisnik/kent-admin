@@ -391,7 +391,7 @@ exports.totals =
         });
         // imported
         queue.push( function( next ) {
-            auth.count({ import: true }, next );
+            auth.count({ imported: true }, next );
         });
         // call
         async.parallel( queue,

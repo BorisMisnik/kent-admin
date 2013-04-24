@@ -106,7 +106,7 @@ define(
                                 pass = !usr.active;
                             if ( pass
                                 && this.filters.import.active )
-                                pass = !!usr.import;
+                                pass = !!usr.imported;
                             return pass;
                         }, this );
 
