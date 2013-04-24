@@ -1,0 +1,234 @@
+{>"manage.html"/}
+{<head}
+    <!-- brands SKU list -->
+    <script type="text/javascript" src="/js/cigarettes_manage.js"></script>
+{/head}
+{<body}
+
+<form class="form-horizontal-" action="/manage/profile/{value.persons.user}" method="post">
+
+    <fieldset>
+        <legend>Редагування профiля</legend>
+    </fieldset>
+
+    <div class="row">
+        <div class="span3">
+
+            <!-- EMail -->
+            <div class="control-group
+                {?error.persons.exists} error{/error.persons.exists}
+                {?error.users.exists} error{/error.users.exists}
+                {?error.persons.email} error{/error.persons.email}
+                ">
+                <label for="" class="control-label">E-Mail</label>
+                <div class="controls">
+                    <input class="span3" type="text" class="input" id="email" name="persons[email]" placeholder="E-mail" value="{value.persons.email}">
+
+                    {?error.persons.exists}
+                    <span class="help-inline">Такий E-mail вже зареєстровано</span>
+                    {:else}
+                        {?error.users.exists}
+                        <span class="help-inline">Такий логін вже зареєстровано</span>
+                        {/error.users.exists}
+                    {/error.persons.exists}
+                    {?error.persons.email}
+                    <span class="help-inline">Перевірте введенні данні</span>
+                    {/error.persons.email}
+                </div>
+            </div>
+
+            <!-- Name -->
+            <div class="control-group {?error.persons.name}error{/error.persons.name}">
+                <label class="control-label" for="">П.I.Б.</label>
+                <div class="controls">
+                    <input type="text" class="input" id="name" name="persons[name]" placeholder="П.I.Б." value="{value.persons.name}">
+
+                    {?error.persons.name}
+                    <span class="help-inline">Перевірте введенні данні</span>
+                    {/error.persons.name}
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="control-group {?error.persons.phone}error{/error.persons.phone}">
+                <label class="control-label" for="">Телефон</label>
+                <div class="controls">
+                    <input type="text" class="input" id="phone" name="persons[phone]" placeholder="000 000-00-00" value="{value.persons.phone}">
+
+                    {?error.persons.phone}
+                    <span class="help-inline">Формат телефона: 000 000-00-00</span>
+                    {/error.persons.phone}
+                </div>
+            </div>
+
+        </div>
+        <div class="span3">
+
+            <!-- Birth date -->
+            <div class="control-group {?error.persons.birth}error{/error.persons.birth}">
+                <label class="control-label">Дата народження</label>
+                <div class="controls">
+
+                    <!-- Day -->
+                    <div class="select select_d">
+                        <!-- select -->
+                        <select name="persons[day]" id="day">
+                            {#days:value.persons}
+                            <option value="{.}" {@if cond="'{day}' == '{.}'"}selected{/if} >{.}</option>
+                            {/days}
+                        </select>
+                    </div>
+
+                    <!-- Month -->
+                    <div class="select select_m">
+                        <!-- select -->
+                        <select name="persons[month]" id="month">
+                            {#months:value.persons}
+                            {month}
+                            <option value="{num}" {@if cond="'{month}' == '{num}'"}selected{/if} >{name}</option>
+                            {/months}
+                        </select>
+                    </div>
+
+                    <!-- Year -->
+                    <div class="select select_y">
+                        <!-- select -->
+                        <select name="persons[year]" id="year">
+                            {#years:value.persons}
+                            <option value="{.}" {@if cond="'{year}' == '{.}'"}selected{/if} >{.}</option>
+                            {/years}
+                        </select>
+                    </div>
+
+                    {?error.persons.birth.incorrect}
+                    <span class="help-inline">Перевірте введенні данні</span>
+                    {/error.persons.birth.incorrect}
+                    {?error.persons.birth.years18}
+                    <span class="help-inline">Ви не досягли 18 років</span>
+                    {/error.persons.birth.years18}
+
+                </div>
+            </div>
+
+            <!-- Gender -->
+
+            <div class="control-group {?error.persons.gender}error{/error.persons.gender}">
+                <label class="control-label" for="">Стать</label>
+                <div class="controls">
+
+                    <!-- select -->
+                    <select name="persons[gender]" id="gender">
+                        {!#persons!}
+                        <option value="male" {@if cond="'{value.persons.gender}' == 'male'"}selected{/if} >Чоловіча</option>
+                        <option value="female" {@if cond="'{value.persons.gender}' == 'female'"}selected{/if} >Жіноча</option>
+                        {!/persons!}
+                    </select>
+
+                    {?error.persons.gender}
+                    <span class="help-inline">Перевірте введенні данні</span>
+                    {/error.persons.gender}
+
+                </div>
+            </div>
+
+            <!-- Password -->
+            <div class="control-group {?error.users.password}error{/error.users.password}">
+                <label class="control-label" for="">Пароль</label>
+                <div class="controls">
+
+                    <input type="password" class="input" id="password" name="users[password]" placeholder="Пароль" value="{value.users.password}" />
+
+                    {?error.users.password}
+                    <span class="help-inline">Невiрний пароль</span>
+                    {/error.users.password}
+
+                </div>
+            </div>
+
+        </div>
+        <div class="span3">
+
+            <!-- Cigarettes A -->
+            <div class="control-group {?error.cigarettes.constantly}error{/error.cigarettes.constantly}">
+                <label class="control-label" for="">Яку марку сігарет ти куриш нійчастише?</label>
+                <div class="controls">
+
+                    <!-- select -->
+                    <select name="cigarettes[constantly_type]"
+                        id="constantly_brand"
+                        linked="#constantly_sku"
+                        class="cigarettes_brand constantly"
+                        current="{value.cigarettes.constantly_type}">
+                    </select>
+                    <!-- select -->
+                    <select name="cigarettes[constantly]"
+                        id="constantly_sku"
+                        class="cigarettes_sku constantly"
+                        current="{value.cigarettes.constantly}">
+                    </select>
+
+                    {?error.cigarettes.constantly}
+                    <span class="help-inline">Треба вказати</span>
+                    {/error.cigarettes.constantly}
+
+                </div>
+            </div>
+
+            <!-- Cigarettes B -->
+
+            <div class="control-group
+                {?error.cigarettes.twins} error{/error.cigarettes.twins}
+                {?error.cigarettes.occasionally} error{/error.cigarettes.occasionally}">
+                <label class="control-label" for="">Яку марку сігарет ти куриш іноді?</label>
+                <div class="controls">
+
+                    <!-- select -->
+                    <select name="cigarettes[occasionally_type]"
+                        id="occasionally_brand"
+                        linked="#occasionally_sku"
+                        class="cigarettes_brand occasionally"
+                        current="{value.cigarettes.occasionally_type}">
+                    </select>
+                    <!-- select -->
+                    <select name="cigarettes[occasionally]"
+                        id="occasionally_sku"
+                        class="cigarettes_sku occasionally"
+                        current="{value.cigarettes.occasionally}">
+                    </select>
+
+                    {?error.cigarettes.occasionally}
+                    <span class="help-inline">Треба вказати</span>
+                    {:else}
+                        {?error.cigarettes.twins}
+                        <span class="help-inline">Має відрізнятись</span>
+                        {/error.cigarettes.twins}
+                    {/error.cigarettes.occasionally}
+
+                </div>
+            </div>
+
+        </div>
+        <div class="span3">
+
+            <p>
+                <input type="submit" class="btn btn-large btn-primary btn-block" value="Зберегти">
+            </p>
+            <p>
+                <input type="reset" class="btn btn-block" value="Відмінити">
+            </p>
+
+        </div>
+    </div>
+
+</form>
+
+<!-- Pager -->
+<ul class="pager">
+    <li class="previous">
+        <a href="/manage/requests">
+            &larr; Повернутись
+        </a>
+    </li>
+</ul>
+
+{/body}
