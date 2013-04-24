@@ -9,7 +9,7 @@
         {{# activate }}
         <li {{# active }}class="active"{{/ active }}>
             <a data-filter="activate" href="#">
-                Активні {{# count }}({{ count }}){{/ count }}
+                Активні <!-- {{# count }}({{ count }}){{/ count }} !} -->
             </a>
         </li>
         {{/ activate }}
@@ -22,6 +22,14 @@
         </li>
         {{/ inactive }}
 
+        {{# review }}
+        <li {{# active }}class="active"{{/ active }}>
+        <a data-filter="review" href="#">
+            Переглянутi <!-- {{# count }}({{ count }}){{/ count }} -->
+        </a>
+        </li>
+        {{/ review }}
+
         {{# import }}
         <li {{# active }}class="active"{{/ active }}>
             <a data-filter="import" href="#">
@@ -32,6 +40,39 @@
 
     </ul>
     {{/ filters }}
+
+
+    {{# paginator }}
+    <!-- Pager -->
+    <ul class="pager">
+
+        {{# prev }}
+        <li class="previous">
+            <a href="/accounts/page/{{ prev }}">
+                &larr; Попередні
+            </a>
+        </li>
+        {{/ prev }}
+
+        {{# next }}
+
+        {{# page }}
+        <li class="">
+            <strong>
+                Сторiнка {{ page }}
+            </strong>
+        </li>
+        {{/ page }}
+
+        <li class="next">
+            <a href="/accounts/page/{{ next }}">
+                Наступні &rarr;
+            </a>
+        </li>
+        {{/ next }}
+
+    </ul>
+    {{/ paginator }}
 
     {{# list.length }}
     <!-- List -->
@@ -114,15 +155,16 @@
         </li>
         {{/ prev }}
 
+        {{# next }}
+
         {{# page }}
-        <li class="next">
+        <li class="">
             <strong>
                 Сторiнка {{ page }}
             </strong>
         </li>
         {{/ page }}
 
-        {{# next }}
         <li class="next">
             <a href="/accounts/page/{{ next }}">
                 Наступні &rarr;
@@ -171,7 +213,7 @@
             <form id="modalProfileForm" class="form-horizontal" >
 
                 <!-- name -->
-                <div class="control-group">
+                <div class="control-group name">
                     <label class="control-label" for="name">П. I. Б.</label>
                     <div class="controls">
                         <input type="text" id="name" name="name" placeholder="П. I. Б.">
@@ -179,7 +221,7 @@
                 </div>
 
                 <!-- phone -->
-                <div class="control-group">
+                <div class="control-group phone">
                     <label class="control-label" for="phone">Мобiльний телефон</label>
                     <div class="controls">
                         <input type="text" id="phone" name="phone" placeholder="0 (00) 000-00-00">
@@ -187,13 +229,13 @@
                 </div>
 
                 <!-- birth date -->
-                <div class="control-group">
+                <div class="control-group birth day">
                     <label class="control-label" for="day">День народження</label>
                     <div class="controls">
                         <input type="text" id="day" name="day" placeholder="День">
                     </div>
                 </div>
-                <div class="control-group">
+                <div class="control-group birth month">
                     <label class="control-label" for="month">Мiсяць</label>
                     <div class="controls">
                         <select id="month" name="month" >
@@ -213,7 +255,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="control-group">
+                <div class="control-group birth year">
                     <label class="control-label" for="year">Рiк</label>
                     <div class="controls">
                         <input type="text" id="year" name="year" placeholder="0000">
@@ -221,7 +263,7 @@
                 </div>
 
                 <!-- email -->
-                <div class="control-group">
+                <div class="control-group email">
                     <label class="control-label" for="email">Email</label>
                     <div class="controls">
                         <input type="text" id="email" name="email" placeholder="Email">
@@ -229,7 +271,7 @@
                 </div>
 
                 <!-- password -->
-                <div class="control-group">
+                <div class="control-group password">
                     <label class="control-label" for="password">Password</label>
                     <div class="controls">
                         <input type="password" id="password" name="password" placeholder="Password">

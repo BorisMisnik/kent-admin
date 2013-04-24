@@ -55,6 +55,14 @@
         "handler": "updateProfile",
         "auth": { "logged": true }
     },
+    {
+        "//": "Update single user profile ( card )",
+        "method": "post",
+        "url": "/account/profile/:id",
+        "script": "./libs/account",
+        "handler": "updateProfile",
+        "auth": { "logged": true }
+    },
 
 
 

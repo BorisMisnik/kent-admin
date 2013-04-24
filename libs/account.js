@@ -231,15 +231,15 @@ exports.updateProfile = function( req, res ) {
     normalizeProfile( values,
         function( err, profile ) {
 
-            debugger;
+            var id = req.params.id || req.user._id;
 
             // database error
             if ( err ) {
                 console.log( 'Database error'.red.bold, err );
-                res.send({
-                    error: true,
-                    database: true
-                });
+                // errors
+                err.error = true;
+                err.database = true;
+                res.send( err );
                 return;
             }
 
@@ -255,7 +255,7 @@ exports.updateProfile = function( req, res ) {
             // update card
             cards.update(
                 {
-                    account_id: ObjectID( req.user._id ),
+                    account_id: ObjectID( id ),
                     type: 'profile'
                 },
                 profile,
@@ -264,7 +264,7 @@ exports.updateProfile = function( req, res ) {
 
                     // update user
                     auth.update(
-                        req.user._id,
+                        id,
                         // todo: change email/login
                         { password: profile.password },
                         function( err, usr ) {
@@ -279,11 +279,16 @@ exports.updateProfile = function( req, res ) {
                                 return;
                             }
 
-                            // results
-                            res.send({
-                                success: true,
-                                profile: profile,
-                                user: req.user
+                            // get user
+                            auth.byId( id, function( err, usr ) {
+                                if ( err ) return res.send({ error: true, database: true, cant_get_user: true });
+
+                                // results
+                                res.send({
+                                    success: true,
+                                    profile: profile,
+                                    user: usr
+                                });
                             });
                     });
                 });
@@ -299,16 +304,63 @@ exports.accountsList =
         //var _roles = roles.slice( 0, roles.indexOf( req.user.role ));
         // if ( !_roles.length ) return res.send( [] );     // no users of self-available roles
 
-        var limit = req.body.limit,
-            skip = req.body.skip;
+        var query = {},
+            cond = [],
+            filters = req.body.filters,
+            paginator = req.body.paginator,
+            // per page
+            limit = 25,
+            // paginator (skip)
+            skip = 0;
+
+        console.log( 'filters:', filters );
+
+        // filters
+        if ( filters ) {
+
+            // active
+            if ( 'true' == filters.activate )
+                cond.push({ active: true });
+//            // inactive
+//            if ( 'false' == filters.activate )
+//                cond.push({ active: { $ne: true }});
+            // inactive
+            if ( 'true' == filters.inactive )
+                cond.push({ active: { $ne: true }});
+            // imported
+            if ( 'true' == filters.import )
+                cond.push({ imported: true });
+//            else
+//            if ( 'false' == filters.import )
+//                cond.push({ imported: { $ne: true }});
+            // reviewed
+            if ( 'true' == filters.review )
+                cond.push({ review: true });
+//            else
+//            if ( 'false' == filters.review )
+//                cond.push({ review: { $ne: true }});
+        }
+        // paginator
+        if ( paginator ) {
+            if ( paginator.limit )
+                limit = paginator.limit || 25;
+            if ( paginator.skip )
+                skip = paginator.skip || 0;
+        }
+
+        if ( cond.length )
+            query = { $and: cond };
+        else query = {};
+
+        console.log( 'accounts list query:', query );
 
         // get users
         auth.users(
             // todo: get users with available roles only
-            {},
-            { limit: 25, skip: 0 },
+            query,
+            { limit: limit || 25, skip: skip || 0 },
             function( err, users ) {
-                console.log( 'Users:', users );
+                console.log( 'Users (len):', users && users.length );
                 if ( err )
                     return res.send({ error: true, database: true });
                 if ( !users || !users.length )
@@ -347,9 +399,8 @@ exports.accountsList =
 
                 // results
                 async.series( queue, function( err, results ) {
-                    console.log( 'users. gather cards results:\n', err, results );
+                    //console.log( 'users. gather cards results:\n', err, results );
 
-                    debugger;
                     if ( err ) {
                         console.log( 'Database error'.red.bold, err );
                         res.send({ error: true, database: err });
@@ -367,7 +418,7 @@ exports.accountsList =
                         });
                     });
 
-                    console.log( 'results:', users );
+                    console.log( 'results (len):', users.length );
 
                     // results
                     res.send( users );
@@ -381,17 +432,29 @@ exports.totals =
         console.log( 'totals:', type );
         // async
         var queue = [];
+        // count all
+        queue.push( function( next ) {
+            auth.count( {}, next );
+        });
         // activate
         queue.push( function( next ) {
             auth.count({ active: true }, next );
         });
-        // inative
-        queue.push( function( next ) {
-            auth.count({ active: { $ne: true }}, next );
-        });
+//        // imported activate
+//        queue.push( function( next ) {
+//            auth.count({ active: true, imported:true }, next );
+//        });
+//        // inative
+//        queue.push( function( next ) {
+//            auth.count({ active: { $ne: true }}, next );
+//        });
         // imported
         queue.push( function( next ) {
             auth.count({ imported: true }, next );
+        });
+        // review
+        queue.push( function( next ) {
+            auth.count({ review: true }, next );
         });
         // call
         async.parallel( queue,
@@ -403,9 +466,11 @@ exports.totals =
                 }
                 res.send({
                     success: true,
+                    all: total.shift(),
                     activate: total.shift(),
-                    inactive: total.shift(),
-                    import: total.shift()
+//                    inactive: total.shift(),
+                    import: total.shift(),
+                    review: total.shift()
                 });
             })
     };

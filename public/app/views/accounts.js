@@ -24,8 +24,9 @@ define(
                     list: [],
                     filters: {
                         activate: { active: true, count: 1 },
-                        inactive: {},
-                        import: {}
+                        inactive: { active: false },
+                        import: { active: true },
+                        review: { active: true }
                     },
                     itemsPerPage: 20,
                     itemsCount: 1,
@@ -47,7 +48,10 @@ define(
                         'click a[data-action="allow"]': 'allow',
                         'click a[data-action="deny"]': 'deny',
                         // form
-                        'click #submitForm': 'submit'
+                        'click #submitForm': 'submit',
+                        // paginator
+                        'click .next': 'pageNext',
+                        'click .previous': 'pagePrev'
                     },
 
                     initialize: function() {
@@ -60,7 +64,8 @@ define(
                     },
 
                     serialize: function() {
-                        var list = this.collection.toJSON(),
+                        var totals = this.totals.toJSON(),
+                            list = this.collection.toJSON(),
                             filtered = [],
                             values = {};
 
@@ -73,7 +78,7 @@ define(
                         // buttons
                         _.each( list, function( usr ) {
                             usr.buttons = {};
-                            if ( !usr.review )
+                            if ( !usr.review && !usr.active )
                                 usr.buttons.review = true;
                             else
                             if ( usr.active )
@@ -83,48 +88,60 @@ define(
                         });
 
                         // paginator
-                        this.paginator.prev =
-                            1 != this.paginator.page;
-                        this.paginator.next =
-                            0 < this.itemsCount - this.paginator.page * this.itemsPerPage;
 
+                        var tots = [];
+                        if ( this.filters.activate.active )
+                            tots.push( this.filters.activate.count );
+                        if ( this.filters.inactive.active )
+                            tots.push( this.filters.inactive.count );
+                        if ( this.filters.import.active )
+                            tots.push( this.filters.import.count );
+                        if ( this.filters.review.active )
+                            tots.push( this.filters.review.count );
+                        this.itemsCount = Math.max.apply( this, tots );
                         // totals
-                        console.log(' totals:', this.totals.toJSON() );
-                        var totals = this.totals.toJSON();
                         this.filters.activate.count = totals.activate;
                         this.filters.inactive.count = totals.inactive;
                         this.filters.import.count = totals.import;
+                        this.filters.review.count = totals.review;
 
-                        // apply filters
-                        filtered = _.filter( list, function( usr ) {
-                            var pass = true;
-                            if ( pass
-                                && this.filters.activate.active )
-                                pass = !!usr.active;
-                            if ( pass
-                                && this.filters.inactive.active )
-                                pass = !usr.active;
-                            if ( pass
-                                && this.filters.import.active )
-                                pass = !!usr.imported;
-                            return pass;
-                        }, this );
+                        // paginator
+                        this.paginator.prev =
+                            1 != this.paginator.page;
+                        this.paginator.next =
+                            list.length == this.itemsPerPage;
+                            //0 < this.itemsCount - this.paginator.page * this.itemsPerPage;
 
-                        // load records in need
-                        if ( filtered.length < list.length
-                            && filtered.length < this.itemsPerPage
-                            && this.paginator.next )
-                            // to few items, then fetch new
-                            this.query();
+//                        // apply filters
+//                        filtered = _.filter( list, function( usr ) {
+//                            var pass = true;
+//                            if ( pass
+//                                && this.filters.activate.active )
+//                                pass = !!usr.active;
+//                            if ( pass
+//                                && this.filters.inactive.active )
+//                                pass = !usr.active;
+//                            if ( pass
+//                                && this.filters.import.active )
+//                                pass = !!usr.imported;
+//                            return pass;
+//                        }, this );
+
+//                        // load records in need
+//                        if ( filtered.length < list.length
+//                            && filtered.length < this.itemsPerPage
+//                            && this.paginator.next )
+//                            // to few items, then fetch new
+//                            this.query();
 
                         // tepmplate data
                         values = {
                             success: true,
-                            list: filtered.slice( 0, this.itemsPerPage ),
+                            list: list, //filtered.slice( 0, this.itemsPerPage ),
                             filters: this.filters,
                             paginator: this.paginator
                         };
-                        console.log( 'serialize accounts:', values );
+                        //console.log( 'serialize accounts:', values );
                         return values;
                     },
 
@@ -132,7 +149,8 @@ define(
                         var filters = {
                                 activate: this.filters.activate.active,
                                 inactive: this.filters.inactive.active,
-                                import: this.filters.import.active
+                                import: this.filters.import.active,
+                                review: this.filters.review.active
                             },
                             paginator = {
                                 limit: this.itemsPerPage,
@@ -142,7 +160,7 @@ define(
                                 filters: filters,
                                 paginator: paginator
                             };
-                        console.log( 'fetch query:', data );
+                        //console.log( 'fetch query:', data );
                         this.collection.fetch({
                             data: data,
                             type: 'POST'
@@ -153,6 +171,10 @@ define(
 
                     changeFilter: function( e ) {
                         e.preventDefault();
+
+                        // reset paginator
+                        this.paginator.page = 1;
+
                         var el = this.$( e.target ),
                             type = el.attr( 'data-filter' ),
                             active = el.parent().hasClass( 'active' );
@@ -161,13 +183,34 @@ define(
                         el.parent().toggleClass( 'active' );
 
                         // radio buttons
+//                        if ( 'activate' == type
+//                            && this.filters.activate.active
+//                            && !this.filters.import.active )
+//                            this.filters.review.active = true;
                         if ( 'activate' == type )
                             this.filters.inactive.active = false;
                         if ( 'inactive' == type )
                             this.filters.activate.active = false;
 
                         // render list
-                        this.render();
+                        //this.render();
+                        this.query();
+                    },
+
+                    pageNext: function( e ) {
+                        e.preventDefault();
+                        if ( this.paginator.page * this.itemsPerPage < this.itemsCount ) {
+                            this.paginator.page++;
+                            this.query();
+                        }
+                    },
+
+                    pagePrev: function( e ) {
+                        e.preventDefault();
+                        if ( this.paginator.page > 1 ) {
+                            this.paginator.page--;
+                            this.query();
+                        }
                     },
 
                     showPhoto: function( e ) {
@@ -221,9 +264,10 @@ define(
                                 var item = self.getItem( id );
                                 if ( !item ) return;
                                 item.set({ review: true, active: true });
-                                self.render();
+                                //self.render();
                                 // update totals
-                                self.totals.fetch();
+                                //self.totals.fetch();
+                                self.query();
                             });
                     },
                     deny: function( e ) {
@@ -238,9 +282,10 @@ define(
                                 var item = self.getItem( id );
                                 if ( !item ) return;
                                 item.set({ review: true, active: false });
-                                self.render();
+                                //self.render();
                                 // update totals
-                                self.totals.fetch();
+                                //self.totals.fetch();
+                                self.query();
                             });
                     },
 
@@ -257,6 +302,7 @@ define(
                     // Form ( modal )
 
                     submit: function( e ) {
+                        debugger;
                         e.preventDefault();
                         // get values
                         var self = this,
@@ -278,11 +324,11 @@ define(
                             // password
                             password: form.find( '#password' ).val()
                         };
-                        console.log( 'form values:', values );
-                        $.post( '/account/profile', values )
+                        //console.log( 'form values:', values );
+                        $.post( '/account/profile/'+ id, values )
                             .fail()
                             .done( function( res ) {
-                                if ( res && res.success )
+                                if ( res && res.success ) {
                                     // hide modal
                                     box.modal( 'hide' );
                                     // update list
@@ -291,11 +337,17 @@ define(
                                     item.set( values );
                                     // render
                                     //self.render();
-                                    self.collection.fetch();
-                                });
+                                    //self.collection.fetch();
+                                    self.query();
+                                } else
+                                if ( res.error ) {
+                                    // populate errors
+                                    self.populateErrors( res );
+                                }
+                            });
                     },
                     populateForm: function( model ) {
-                        console.log( 'populdate:', model.toJSON());
+                        //console.log( 'populdate:', model.toJSON());
                         var self = this,
                             form = self.$( '#modalProfileForm' );
                         // id
@@ -322,7 +374,7 @@ define(
                         controls.removeClass( 'error' );
                         // show new
                         _.each( err, function( val, key ) {
-                            console.log( 'error:', key );
+                            //console.log( 'error:', key );
                             form.find( '.'+ key).addClass( 'error ');
                         })
                     }
