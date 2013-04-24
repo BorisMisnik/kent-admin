@@ -104,7 +104,8 @@
                 {{# profile.photo }}
                     <!-- todo: Passport image -->
                     <!--<a href="#" onclick="javascript:window.open( '/uploads/{photo}', 'Фото документiв', 'width=800,height=600,location=no,toolbar=no,menubar=no,directories=no,status=no' ); return false;">Фото</a>-->
-                    <img src="{{ profile.photo }}" data-action="photo" data-account="{{ _id }}" style="cursor: pointer" width="40" />
+                    <!-- <img src="{{ profile.photo }}" data-action="photo" data-account="{{ _id }}" style="cursor: pointer" width="40" /> -->
+                    <a href="#" data-action="photo" data-account="{{ _id }}">фото</a>
                 {{/ profile.photo }}
                 {{^ profile.photo }}
                     <i>Немає</i>

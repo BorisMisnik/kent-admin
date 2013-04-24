@@ -23,7 +23,7 @@ var menu = {
 //                title: 'Вiдповiдi на запитання',
 //                state: 'requests'
 //                //path: '/requests.js'
-//            }
+//            },
         ],
         admin: [
             {

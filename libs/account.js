@@ -38,7 +38,10 @@ exports.logout =
     function( req, res ) {
         console.log( 'logout' );
         req.logout();
-        res.send({ success: 'Logged out' });
+        if ( req.xhr )
+            res.send({ success: 'Logged out' });
+        else
+            res.redirect( '/' );
         console.log( '<logout' );
     };
 
@@ -388,11 +391,11 @@ exports.accountsList =
                                     //fields: [ 'account_id', 'active', 'name', 'day','month','year', 'phone' ]
                                 },
                                 function( err, account ) {
-                                    if ( err ) next( err );
-                                    else
-                                    if ( !account ) next( new Error( 'Not exists account' ));
-                                    else
-                                        next( null, account );
+                                    if ( err ) return next( err );
+                                    if ( !account ) return next( new Error( 'Not exists account' ));
+                                    // remove photo (because of traffic)
+                                    account.photo = !!account.photo;
+                                    next( null, account );
                                 });
                         })
                 });

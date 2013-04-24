@@ -12,9 +12,7 @@
 define(
     [ 'libs/app' ],
     function( app ) {
-
-        console.log( 'desktop.operator' );
-        return { loaded: true };
+        window.location.href = '/account/logout'
     });
 
 console.log( '- desktop operator' );
