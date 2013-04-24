@@ -25,8 +25,8 @@ define(
                     filters: {
                         activate: { active: true, count: 1 },
                         inactive: { active: false },
-                        import: { active: true },
-                        review: { active: true }
+                        import: { active: false },
+                        review: { active: false }
                     },
                     itemsPerPage: 20,
                     itemsCount: 1,
@@ -98,6 +98,12 @@ define(
                             tots.push( this.filters.import.count );
                         if ( this.filters.review.active )
                             tots.push( this.filters.review.count );
+                        if ( !this.filters.activate.active
+                            && !this.filters.inactive.active
+                            && !this.filters.import.active
+                            && !this.filters.review.active
+                            && !this.filters.review.active )
+                            tots.push( totals.all );
                         this.itemsCount = Math.max.apply( this, tots );
                         // totals
                         this.filters.activate.count = totals.activate;
