@@ -17,13 +17,13 @@ var menu = {
                 title: 'Профiлi користувачiв',
                 state: 'accounts'
                 //path: '/accounts.js'
-            },
-            {
-                url: '/requests',
-                title: 'Вiдповiдi на запитання',
-                state: 'requests'
-                //path: '/requests.js'
             }
+//            {
+//                url: '/requests',
+//                title: 'Вiдповiдi на запитання',
+//                state: 'requests'
+//                //path: '/requests.js'
+//            }
         ],
         admin: [
             {

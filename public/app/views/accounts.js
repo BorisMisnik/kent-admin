@@ -290,7 +290,8 @@ define(
                                     if ( !item ) return;
                                     item.set( values );
                                     // render
-                                    self.render();
+                                    //self.render();
+                                    self.collection.fetch();
                                 });
                     },
                     populateForm: function( model ) {

@@ -468,6 +468,56 @@ exports.permission =
                         return;
                     }
                     res.send({ success: true, active: data.active });
+
+                    console.log( 'switch results:', err, usr );
+                    cards.get(
+                        { account_id: cards.ObjectID( usr._id ), type:'profile' },
+                        function( err, card ) {
+                            //console.log( 'card:', card );
+                            if ( err ) return res.send({ error: true, database: true });
+                            if ( !card ) return res.send({ error: true, does_not_exists: true });
+                            if ( !card.account_id ) return res.send({ error: true, no_account: true });
+
+
+                            var opts;
+                            if ( 'allow' == action )
+                                opts = mailing.activate;
+                            else
+                            if ( 'deny' == action )
+                                opts = mailing.deactivate;
+
+                            // compose mail
+
+                            if ( opts && opts.template ) {
+                                // render mail template
+                                res.render(
+                                    opts.template,
+                                    {
+                                        name: card.name,
+                                        login: usr.login,
+                                        password: usr.password
+                                    },
+                                    function( err, text ) {
+                                        console.log( 'render mail:', text );
+                                        if ( !err && text ) {
+
+                                            // send mail
+                                            mail.send(
+                                                {
+                                                    from: opts.from,
+                                                    to: card.name +' <'+ card.email +'>',
+                                                    subject: opts.subject,
+                                                    body: text
+                                                },
+                                                function( err, sent ) {
+                                                    if ( err )
+                                                        console.log( 'Mail error'.red.bold, err );
+                                                });
+                                        }
+                                    });
+                            }
+                        });
+
                 })
 
         });
