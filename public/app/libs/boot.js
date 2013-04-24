@@ -12,7 +12,7 @@ define(
     [ 'js!hogan' ],
     function() {
 
-        console.log( 'Boot!' );
+        //console.log( 'Boot!' );
 
         /**
          * Configuration

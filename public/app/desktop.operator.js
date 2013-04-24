@@ -15,4 +15,4 @@ define(
         window.location.href = '/account/logout'
     });
 
-console.log( '- desktop operator' );
+//console.log( '- desktop operator' );

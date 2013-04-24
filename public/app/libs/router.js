@@ -27,9 +27,9 @@ define(
             else
                 urls[ state ] = url || 'views/' + state;
             // assign route
-            console.log( 'route url:', route );
+            //console.log( 'route url:', route );
             router.route( route, function() {
-                console.log( 'route change state from:', registry.get( 'state' ), 'to:', state );
+                //console.log( 'route change state from:', registry.get( 'state' ), 'to:', state );
                 registry.set( 'state', state );
                 // app: state changes handled in `app.js` `initialize()`
                 // see: libs/app.js

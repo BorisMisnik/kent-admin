@@ -447,10 +447,10 @@ exports.totals =
 //        queue.push( function( next ) {
 //            auth.count({ active: true, imported:true }, next );
 //        });
-//        // inative
-//        queue.push( function( next ) {
-//            auth.count({ active: { $ne: true }}, next );
-//        });
+        // inative
+        queue.push( function( next ) {
+            auth.count({ active: { $ne: true }}, next );
+        });
         // imported
         queue.push( function( next ) {
             auth.count({ imported: true }, next );
@@ -471,7 +471,7 @@ exports.totals =
                     success: true,
                     all: total.shift(),
                     activate: total.shift(),
-//                    inactive: total.shift(),
+                    inactive: total.shift(),
                     import: total.shift(),
                     review: total.shift()
                 });

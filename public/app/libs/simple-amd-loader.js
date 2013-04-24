@@ -15,7 +15,7 @@ function init() {
             '/js/app2'
         ],
         function() {
-            console.log( 'define() loaded:', arguments );
+            //console.log( 'define() loaded:', arguments );
         });
 }
 setTimeout( init, 0 );
@@ -61,7 +61,7 @@ function define( name, deps, complete ) {
             path = deps[ id ];
             // cache
             if ( defined[ path ]) {
-                console.log( 'exists', path );
+                //console.log( 'exists', path );
             } else {
                 // loading
                 loading = load( path );
@@ -87,11 +87,11 @@ function define( name, deps, complete ) {
                 else
                     res = args;
                 // callback( null, app());
-                console.log( 'load.done:', res );
+                //console.log( 'load.done:', res );
                 defined[ name ] = complete.apply( this, res );
             })
             .fail( function( err ) {
-                console.log( 'Error raised in loaded script' );
+                //console.log( 'Error raised in loaded script' );
                 throw err;
             });
 
@@ -149,7 +149,7 @@ function load( path ) {
                 mimeType: 'text/plain'
             })
                 .done( function( script ) {
-                    console.log( 'ajax loaded:', arguments );
+                    //console.log( 'ajax loaded:', arguments );
                     var res = eval( script );
                     defer.resolve( res );
                 })

@@ -13,13 +13,13 @@ define(
     [ 'libs/app' ],
     function( app ) {
 
-        console.log( 'desktop.admin' );
+        //console.log( 'desktop.admin' );
         return Backbone.Layout.extend({
             template: 'test',
             initialize: function() {
-                console.log( 'desktop.admin : init' );
+                //console.log( 'desktop.admin : init' );
             }
         });
     });
 
-console.log( '- desktop admin' );
+//console.log( '- desktop admin' );

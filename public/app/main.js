@@ -33,4 +33,4 @@ define(
         window.app = app;
     });
 
-console.log( '- main' );
+//console.log( '- main' );

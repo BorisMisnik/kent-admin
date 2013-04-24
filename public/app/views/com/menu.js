@@ -32,7 +32,7 @@ define(
                         // add routes
                         _.each( this.items.toJSON(),
                             function( item ) {
-                                console.log( 'item', item );
+                                //console.log( 'item', item );
                                 router.addStateRoute( '!' + item.url, item.state, item.path );
                             });
                         // show items
@@ -77,4 +77,4 @@ define(
             return menu;
     });
 
-console.log( '- menu' );
+//console.log( '- menu' );

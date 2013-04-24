@@ -13,8 +13,8 @@ define(
     [ 'libs/app' ],
     function( app ) {
 
-        console.log( 'desktop.visitor' );
+        //console.log( 'desktop.visitor' );
         return { loaded: true };
     });
 
-console.log( '- desktop visitor' );
+//console.log( '- desktop visitor' );

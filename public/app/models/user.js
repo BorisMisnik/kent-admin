@@ -61,7 +61,7 @@ define(
                             password: password
                         })
                         .fail( function( def, type, status ) {
-                            console.log( 'login: ajax fail:', arguments );
+                            //console.log( 'login: ajax fail:', arguments );
                             Backbone.log( 'login: ajax fail', status );
                             // update
                             self.set( 'authorized', false );

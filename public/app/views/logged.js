@@ -15,7 +15,7 @@ define(
             {
                 initialize: function( app ) {
 
-                    console.log( 'APP arg:', app );
+                    //console.log( 'APP arg:', app );
 
                     if ( user.isAutorized ) load();
                     else
@@ -27,7 +27,7 @@ define(
                     function load() {
                         require( 'views/desktop',
                             function( desktop ) {
-                                console.log( 'DESKTOP loaded', desktop );
+                                //console.log( 'DESKTOP loaded', desktop );
                             });
                     }
                 }
