@@ -1,0 +1,36 @@
+/*
+    Management section
+*/
+/*
+.box .navbar {
+    margin-top: 40px;
+}
+.box .title {
+    margin-bottom: 20px;
+}*/
+
+.form-card {
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.thumbnails {
+    margin-top: 20px;
+}
+
+.thumbnails .thumb {
+    min-width: 100px;
+    height: 151px;
+    overflow: hidden;
+
+    float: left;
+    position: relative;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    border: 1px solid gray;
+}
+
+.thumbnails .capt {
+    position: absolute;
+    bottom: 15px;
+}

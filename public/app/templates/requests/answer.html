@@ -1,0 +1,64 @@
+<div class="row">
+
+    <form class="answerForm" action="" id="{{ _id }}" method="post">
+
+        <!-- Form -->
+        <div class="span9 -form-card">
+            <div class="well">
+                <fieldset>
+                    <!-- <legend>Картка відповіді</legend> -->
+
+                    <blockquote>
+                        <p>{{ values.message }}</p>
+                        <small>{{ values.name }}</small>
+                    </blockquote>
+
+                    {{# errors }}
+                    <p class="error">Has error(s)</p>
+                    {{/ errors }}
+
+                    <span></span>
+
+                    <div class="control-group {{# errors.subject }}error{{/ errors.subject }}">
+                        <label>Тема листа</label>
+                        <div class="controls">
+
+                            <input class="span3" type="text" name="subject" value="{{ values.subject }}{{^ values.subject }}Відповідь на запитання{{/ values.subject }}" />
+                            {{# errors.subject }}
+                            <span class="help-inline">Невірні данні</span>
+                            {{/ errors.subject }}
+                        </div>
+                    </div>
+
+                    <div class="control-group {{# errors.answer }}error{{/ errors.answer }}">
+                        <label>Повідомлення</label>
+                        <div class="controls">
+
+                            <textarea rows="3" class="span8" name="answer">{{ values.answer }}{{^ values.answer }}Шановний, {{ values.name }}.{{/ values.answer }}</textarea>
+                            {{# errors.answer }}
+                            <span class="help-inline">Невірні данні</span>
+                            {{/ errors.answer }}
+                        </div>
+                    </div>
+
+                </fieldset>
+            </div>
+        </div>
+
+        <div class="span3">
+
+            <!-- Actions -->
+            <!--<div class="well" style="margin-top: 15px;">-->
+                {{^ answered }}<input class="action-submit btn btn-block btn-primary btn-large" type="submit" value="Надіслати" _id="{{ values._id }}" />{{/ answered }}
+                <div class="btn-group" style="padding-top: 10px">
+                    <button class="answer-reset btn" type="reset">Скасувати</button>
+                    <button class="answer-remove btn btn-danger" _id="{{ values._id }}">Видалити</button>
+                    <button class="answer-close btn" type="cancel">Закрити</button>
+                </div>
+            <!--</div>-->
+
+        </div>
+
+    </form>
+
+</div>

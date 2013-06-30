@@ -1,0 +1,124 @@
+
+<!--
+    <link rel="stylesheet" href="/css/fineuploader-3.2.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="/css/manage.css" type="text/css" media="screen" charset="utf-8">
+    <script src="/assets/js/jquery.fineuploader-3.2.js"></script>
+-->
+
+
+<div class="row">
+
+    <!-- Form -->
+    <div class="span3 form-card">
+
+        <form class="galleryForm" action="/manage/parties/{{ id }}" method="post">
+            <fieldset>
+                <legend>Картка події</legend>
+
+                {{# errors }}
+                <p class="error">Has error(s)</p>
+                {{/ errors }}
+
+                <span></span>
+
+                <div class="control-group {{# errors.city }}error{{/ errors.city }}">
+                    <label>Місто</label>
+                    <div class="controls">
+
+                        <input class="span3" type="text" name="city" value="{{ values.city }}" />
+                        {{# errors.city }}
+                        <span class="help-inline">Невірні данні</span>
+                        {{/ errors.city }}
+                    </div>
+                </div>
+
+
+                <div class="control-group {{# errors.club }}error{{/ errors.club }}">
+                    <label>Назва клубу</label>
+                    <div class="controls">
+
+                        <input class="span3" type="text" name="club" value="{{ values.club }}" />
+                        {{# errors.club }}
+                        <span class="help-inline">Невірні данні</span>
+                        {{/ errors.club }}
+                    </div>
+                </div>
+
+                <div class="control-group {{# errors.date }}error{{/ errors.date }}">
+                    <label>Дата події</label>
+                    <div class="controls">
+
+                        <input class="span3" type="text" name="date" value="{{ values.date }}" />
+                        <i>(ex. 02/18/2013)</i>
+
+                        {{# errors.date }}
+                        <span class="help-inline">Невірні данні</span>
+                        {{/ errors.date }}
+                    </div>
+                </div>
+
+                {{ !
+                <div class="control-group {-{ ?errors.likes }-}error{-{ /errors.likes }-}">
+                    <label>Лаїкі</label>
+                    <div class="controls">
+
+                        <input class="span3" type="text" name="likes" value="{-{ values.likes }-}" />
+
+                        {-{ ?errors.likes }-}
+                        <span class="help-inline">Невірні данні</span>
+                        {-{ /errors.likes }-}
+                    </div>
+                </div>
+                }}
+
+                <!-- Actions -->
+                <div class="well" style="margin-top: 15px;">
+                    {{# create }}<input class="form-submit btn btn-block btn-primary btn-large" type="submit" value="Створити" />{{/ create }}
+                    {{^ create }}<input class="form-submit btn btn-block btn-success btn-large" type="submit" value="Змінити" />{{/ create }}
+                    <div class="btn-group" style="padding-top: 10px">
+                        <button class="form-reset btn" type="reset">Скасувати</button>
+                        <button class="form-close btn" type="cancel">Закрити</button>
+                    </div>
+                </div>
+
+                {{ !
+                <!-- Pager -->
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="/manage/parties">
+                            &larr; Повернутись
+                        </a>
+                    </li>
+                </ul>
+                }}
+
+            </fieldset>
+        </form>
+
+    </div>
+
+    {{# uploader }}
+    <div class="span8" style="margin-left: 0; margin-bottom: 25px;">
+
+        <legend>Фотографії</legend>
+
+        <!-- Uploader -->
+        <div id="thumbnail-fine-uploader"></div>
+
+        <!-- Photo Thumbnails -->
+        <div class="row-fluid">
+            <div class="thumbnails">
+
+                {{# values.photos }}
+                <div class="thumb">
+                    <img src="/photos/{{ name }}_small.{{ ext }}" />
+                    <a class="photo-remove btn btn-block btn-danger capt" _id="{{ values._id }}" _name="{{ name }}">Видалити</a>
+                </div>
+                {{/ values.photos }}
+
+            </div>
+        </div>
+    </div>
+    {{/ uploader }}
+
+</div>

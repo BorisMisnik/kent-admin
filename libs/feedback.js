@@ -9,67 +9,148 @@
 
 var server = require( 'piezo-server' ),
     cards = server.libs.cards,
+    mail = server.libs.mail,
     check = server.utils.check,
     filter = server.utils.filter,
-    ObjectID = server.utils.ObjectID;
+    ObjectID = server.utils.ObjectID,
+    // locals
+    fromEmail = 'Kent <postmaster@kent.com.ua>';
 
 exports.feedback = function( req, res ) {
 
-    var errors = {},
-        email = String( req.body.email || '' ),
-        name = String( req.body.name || '' ),
+    var email,
+        name,
         message = String( req.body.message || '' ),
-        record;
+        user_id = ObjectID( req.user && req.user._id );
 
-    // checks
-    // name
-    if ( !name
-        || name.length > 254 )
-        errors.name = true;
+    console.log( 'Feedback:', req.user, message );
+    if ( !user_id ) return res.send({ error: { user: true }});
 
-    // email
-    if ( !email
-        || email.length > 254
-        || !check.notEmpty( email )
-        || !check.isEmail( email ))
-        errors.email = true;
-
-    // message
-    if ( !message
-        || message.length > 4069 )
-        errors.message = true;
-
-    // catch errors
-    if ( Object.keys( errors ).length ) {
-        console.log( 'Feedback form errors:', errors );
-        errors.error = true;
-        return res.send( errors );
-    }
-
-    // values data
-    record = {
-        email: email,
-        name: name,
-        message: message
-    };
-    console.log( 'Feedback form:', record );
     debugger;
 
-    // store
-    cards.create(
-        {
-            account_id: ObjectID( req.user && req.user._id ),
-            type: 'feedback',
-            email: email,
-            name: name,
-            message: message
-        },
-        function( err, doc ) {
-
-            if ( err || !doc )
-                return res.send({ error: err || true, database: true });
-            // success
-            res.json({ success: true });
+    // get user profile
+    cards.get(
+        { type: 'profile', account_id: user_id },
+        function( err, profile ) {
+            // errors
+            if ( err || !profile || !profile.email )
+                return res.send({ error: { profile: true }});
+            // checkings
+            if ( !message
+                || message.length > 4069 )
+                return res.send({ error: { message: true }});
+            // log
+            console.log( 'Feedback form:', profile.email, profile.name, message );
+            // store
+            cards.create(
+                {
+                    account_id: ObjectID( req.user && req.user._id ),
+                    type: 'feedback',
+                    email: profile.email,
+                    name: profile.name,
+                    message: message
+                },
+                {
+                    exists: false
+                },
+                function( err, doc ) {
+                    // errors
+                    if ( err || !doc )
+                        return res.send({ error: { create: true }});
+                    // success
+                    res.json({ success: doc });
+                });
         });
+};
 
+exports.answer = function( req, res ) {
+    var id = ObjectID( req.params.id ),
+        opts = req.body || {};
+    if ( !id ) return res.send({ error: { id: true }});
+
+    // get feedback
+    cards.get(
+        { type: 'feedback', _id: id },
+        function( err, feedback ) {
+            if ( err ) return res.send({ error: { database: true }});
+            if ( !feedback ) return res.send({ error: { not_found: true }});
+
+            // get user profile
+            cards.get(
+                { type: 'profile', account_id: feedback.account_id },
+                function( err, profile ) {
+                    // errors
+                    if ( err || !profile ) return res.send({ error: { profile: true }});
+                    if ( !profile.email ) return res.send({ error: { no_email: true }});
+                    // values
+                    var subject = req.body.subject,
+                        answer = req.body.answer;
+                    if ( !subject || !subject.length || subject.length > 250 )
+                        return res.send({ error: { subject: true }});
+                    if ( !answer || !answer.length || answer.length > 4000 )
+                        return res.send({ error: { answer: true }});
+
+                    // send mail
+                    mail.send(
+                        {
+                            from: fromEmail,
+                            to: profile.name +' <'+ profile.email +'>',
+                            subject: subject,
+                            body: answer
+                        },
+                        function( err, sent ) {
+                            if ( err ) console.log( 'Mail error'.red.bold, err );
+                        });
+
+                    // update
+                    feedback.subject = subject;
+                    feedback.answer = answer;
+                    feedback.answered = new Date();
+                    cards.update(
+                        { type: 'feedback', _id: id },
+                        feedback,
+                        function( err ) {
+                            if ( err ) return res.send({ error: { update: true }});
+                            res.send({ success: feedback });
+                        });
+
+                });
+        });
+};
+
+exports.list = function( req, res ) {
+    debugger;
+    cards.list(
+        { type: 'feedback' },
+        { limit: 10000 },      // todo: paginator
+        function( err, list ) {
+            if ( err || !list ) return res.send({ error: { database: true }});
+            res.send({ success: list });
+        });
+};
+
+exports.get = function( req, res ) {
+    var id = ObjectID( req.params.id );
+    if ( !id ) return res.send({ error: { id: true }});
+    cards.get(
+        { type: 'feedback', _id: id },
+        function( err, feedback ) {
+            if ( err ) return res.send({ error: { database: true }});
+            if ( !feedback ) return res.send({ error: { not_found: true }});
+            res.send({ success: feedback });
+        });
+};
+
+exports.remove = function( req, res ) {
+    var id = ObjectID( req.params.id );
+    cards.remove(
+        { type: 'feedback', _id: id },
+        function( err, removed ) {
+            if ( err ) return res.send({ error: { database: true }});
+            res.send({ success: removed });
+        });
+};
+
+exports.update = function( req, res ) {
+    res.send({ error: { not_implement: true }});
 };

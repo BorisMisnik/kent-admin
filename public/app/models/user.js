@@ -1,12 +1,3 @@
-/*!
- * Module: Module
- *
- * @author Andjey Guzhovskiy, <me.the.ascii@gmail.com>
- * @copyright (c) 2013 Andjey Guzhovskiy
- * @licence CLOSED
- * @version 0.0.1
- */
-
 // singleton
 
 define(
@@ -34,11 +25,11 @@ define(
                     self.unset( 'user' );
                     $.get( '/account' )
                         .fail( function( def, type, status ) {
-                            Backbone.log( 'account: ajax fail:', arguments );
+//                            Backbone.log( 'account: ajax fail:', arguments );
                             self.set( 'authorized', false );
                         })
                         .done( function( res ) {
-                            Backbone.log( 'account: ajax done', arguments );
+//                            Backbone.log( 'account: ajax done', arguments );
                             var success = !!( res && res.success );
                             self.set( 'authorized', success );
                             if ( success ) {
@@ -62,7 +53,7 @@ define(
                         })
                         .fail( function( def, type, status ) {
                             //console.log( 'login: ajax fail:', arguments );
-                            Backbone.log( 'login: ajax fail', status );
+//                            Backbone.log( 'login: ajax fail', status );
                             // update
                             self.set( 'authorized', false );
                             // Unauthorized
@@ -74,7 +65,7 @@ define(
                                 callback( new Error( status ));
                         })
                         .done( function( res ) {
-                            Backbone.log( 'login: ajax done', arguments );
+//                            Backbone.log( 'login: ajax done', arguments );
                             // update
                             self.set( 'authorized', res );
                             // callback
@@ -94,11 +85,11 @@ define(
                     // query
                     $.get( '/account/logout' )
                         .fail( function( def, type, status ) {
-                            Backbone.log( 'logout: ajax fail', status );
+//                            Backbone.log( 'logout: ajax fail', status );
                             callback( new Error( status ));
                         })
                         .done( function( res ) {
-                            Backbone.log( 'logout: ajax done', res );
+//                            Backbone.log( 'logout: ajax done', res );
                             if ( res.error )
                                 callback( null, null, res );
                             else
@@ -114,11 +105,11 @@ define(
                             email: email
                         })
                         .fail( function( def, type, status ) {
-                            Backbone.log( 'remind password: ajax fail', status );
+//                            Backbone.log( 'remind password: ajax fail', status );
                             callback( new Error( status ));
                         })
                         .done( function( res ) {
-                            Backbone.log( 'remind password: ajax done', res );
+//                            Backbone.log( 'remind password: ajax done', res );
                             callback( null, res );
                         });
                 },
@@ -128,11 +119,11 @@ define(
                         '/account/signup',
                         Object( form ))
                         .fail( function( def, type, status ) {
-                            Backbone.log( 'signup: ajax fail', status );
+//                            Backbone.log( 'signup: ajax fail', status );
                             callback( new Error( status ));
                         })
                         .done( function( res ) {
-                            Backbone.log( 'signup: ajax done', res );
+//                            Backbone.log( 'signup: ajax done', res );
                             callback( null, res );
                         });
                 }

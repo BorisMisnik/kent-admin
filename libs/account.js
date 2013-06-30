@@ -210,7 +210,7 @@ exports.user =
 
 exports.account =
     function( req, res ) {
-        debugger;
+        // debugger;
         console.log( 'account' );
         console.log( 'account user:', req.user );
         cards.get(

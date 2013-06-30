@@ -17,13 +17,19 @@ var menu = {
                 title: 'Профiлi користувачiв',
                 state: 'accounts'
                 //path: '/accounts.js'
+            },
+            {
+                url: '/gallery',
+                title: 'Галерея',
+                state: 'gallery'
+                //path: '/gallery.js'
+            },
+            {
+                url: '/requests',
+                title: 'Запитання',
+                state: 'requests'
+                //path: '/requests.js'
             }
-//            {
-//                url: '/requests',
-//                title: 'Вiдповiдi на запитання',
-//                state: 'requests'
-//                //path: '/requests.js'
-//            },
         ],
         admin: [
             {
@@ -33,26 +39,32 @@ var menu = {
                 //path: '/accounts.js'
             },
             {
+                url: '/gallery',
+                title: 'Галерея',
+                state: 'gallery'
+                //path: '/gallery.js'
+            },
+            {
                 url: '/requests',
-                title: 'Вiдповiдi на запитання',
+                title: 'Запитання',
                 state: 'requests'
                 //path: '/requests.js'
-            },
-            {
-                url: '/logs',
-                title: 'Журнали та звіти',
-                state: 'logs'
-            },
-            {
-                url: '/import',
-                title: 'Імпорт до бази',
-                state: 'imports'
-            },
-            {
-                url: '/cluster',
-                title: 'Кластер серверів',
-                state: 'cluster'
             }
+//            {
+//                url: '/logs',
+//                title: 'Журнали та звіти',
+//                state: 'logs'
+//            },
+//            {
+//                url: '/import',
+//                title: 'Імпорт до бази',
+//                state: 'imports'
+//            },
+//            {
+//                url: '/cluster',
+//                title: 'Кластер серверів',
+//                state: 'cluster'
+//            }
         ]
     };
 

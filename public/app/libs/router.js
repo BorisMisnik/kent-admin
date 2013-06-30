@@ -52,6 +52,11 @@ define(
 
         // API
 
+//        router.startup = function() {
+//            // init router
+//            Backbone.history.fragment = null;
+//            Backbone.history.start(); // { pushState: true });
+//        };
         router.currentUrl = function() {
             var current = Backbone.history.fragment;
             Backbone.history.fragment = null;

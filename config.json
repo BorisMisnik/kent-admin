@@ -12,7 +12,8 @@
         "static": [
             "./assets",
             "./public"
-        ]
+        ],
+        "uploads": "public/uploads"
     },
     "mail": {
         "service": "Mailgun",

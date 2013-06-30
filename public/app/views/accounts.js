@@ -58,7 +58,7 @@ define(
                         // list items
                         this.collection.on( 'sync', this.render, this );
                         this.query();
-                        // titals
+                        // totals
                         this.totals.on( 'change', this.render, this );
                         this.totals.fetch();
                     },

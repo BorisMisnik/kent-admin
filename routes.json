@@ -124,13 +124,46 @@
     },
 
 
-    {
-        "//": "Feedback form",
-        "method": "post",
-        "url": "/feedback",
-        "script": "./libs/feedback",
-        "handler": "feedback"
-    },
+            {
+                "//": "Create feedback",
+                "method": "post",
+                "url": "/feedback",
+                "script": "./libs/feedback",
+                "handler": "feedback",
+                "auth": { "roles": [ "visitor", "operator", "admin" ]}
+            },
+            {
+                "//": "Get full feedbacks list",
+                "method": "get",
+                "url": "/feedback",
+                "script": "./libs/feedback",
+                "handler": "list",
+                "auth": { "roles": [ "operator", "admin" ]}
+            },
+            {
+                "//": "Answer feedback",
+                "method": "post",
+                "url": "/feedback/answer/:id",
+                "script": "./libs/feedback",
+                "handler": "answer",
+                "auth": { "roles": [ "operator", "admin" ]}
+            },
+            {
+                "//": "Remove feedback",
+                "method": "post",
+                "url": "/feedback/remove/:id",
+                "script": "./libs/feedback",
+                "handler": "remove",
+                "auth": { "roles": [ "operator", "admin" ]}
+            },
+            {
+                "//": "Get feedback record",
+                "method": "get",
+                "url": "/feedback/:id",
+                "script": "./libs/feedback",
+                "handler": "get",
+                "auth": { "roles": [ "operator", "admin" ]}
+            },
 
 
     {
@@ -165,11 +198,65 @@
         "method": "get",
         "url": "/app/desktop.admin.js",
         "auth": { "roles": [ "admin" ]}
-    }
+    },
 
 
+                {
+                    "//": "Galleries list",
+                    "method": "get",
+                    "url": "/gallery",
+                    "script": "./libs/gallery",
+                    "handler": "galleryList",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Add new gallery record",
+                    "method": "post",
+                    "url": "/gallery/create",
+                    "script": "./libs/gallery",
+                    "handler": "galleryCreate",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Get gallery record",
+                    "method": "get",
+                    "url": "/gallery/get/:id",
+                    "script": "./libs/gallery",
+                    "handler": "galleryGet",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Update gallery record",
+                    "method": "post",
+                    "url": "/gallery/update/:id",
+                    "script": "./libs/gallery",
+                    "handler": "galleryUpdate",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Remove gallery",
+                    "method": "post",
+                    "url": "/gallery/remove/:id",
+                    "script": "./libs/gallery",
+                    "handler": "galleryRemove",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
 
-
-
+                {
+                    "//": "Upload photo",
+                    "method": "post",
+                    "url": "/gallery/photo/upload/:id",
+                    "script": "./libs/gallery",
+                    "handler": "photoUpload",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Remove photo",
+                    "method": "post",
+                    "url": "/gallery/photo/remove/:id/:name",
+                    "script": "./libs/gallery",
+                    "handler": "photoRemove",
+                    "auth": { "roles": [ "operator", "admin" ]}
+                }
 
 ]

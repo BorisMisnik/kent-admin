@@ -1,0 +1,38 @@
+<h3>Вiдповiдi на запитання</h3>
+
+<div id="placeAnswerForm"></div>
+
+{{# list.length }}
+
+<table class="table table-striped">
+    <tr>
+        <th>Видповіли</th>
+        <th>Пошта</th>
+        <th>Дата</th>
+        <th>Ім'я</th>
+        <th>Запитання</th>
+        <th>Дія</th>
+    </tr>
+
+    {{# list }}
+    <tr>
+        <td>{{# answered }}✔{{/ answered }}</td>
+        <td>{{ email }}</td>
+        <td>{{ date }}</td>
+        <td>{{ name }}</td>
+        <td>{{ message }}</td>
+        <td>
+            <!-- Actions -->
+            <div class="btn-group">
+                {{^ answered }}<a href="#" class="answerslist-answer btn" _id="{{ _id }}">Відповісти</a>{{/ answered }}
+                {{# answered }}<a href="#" class="answerslist-answer btn btn-success" _id="{{ _id }}">Переглянути</a>{{/ answered }}
+                <a href="#" class="answerslist-remove btn btn-danger" _id="{{ _id }}">Видалити</a>
+            </div>
+
+        </td>
+    </tr>
+    {{/ list }}
+
+</table>
+
+{{/ list.length }}

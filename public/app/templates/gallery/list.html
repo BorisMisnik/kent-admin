@@ -1,0 +1,41 @@
+<h3>Галерея. Перелік подій</h3>
+
+<div id="createForm"></div>
+
+{{# galleries.length }}
+
+    <table class="table table-striped">
+        <tr>
+            <th>Місто</th>
+            <th>Дата</th>
+            <th>Назва клубу</th>
+            <!--<th>Лайків</th>-->
+            <th>Фото</th>
+            <th>Дія</th>
+        </tr>
+
+        {{# galleries }}
+        <tr>
+            <td>{{ city }}</td>
+            <td>{{ date }}</td>
+            <td>{{ club }}</td>
+            <!--<td>{{ likes }}</td>-->
+            <td>{{ photonums }}</td>
+            <td>
+                <!-- Actions -->
+                <div class="btn-group">
+                    <a href="/gallery/edit/{{ _id }}" class="action-edit btn" _id="{{ _id }}">Редагувати</a>
+                    <a href="/gallery/remove/{{ _id }}" class="action-remove btn btn-danger" _id="{{ _id }}">Видалити</a>
+                </div>
+
+            </td>
+        </tr>
+        {{/ galleries }}
+
+    </table>
+
+{{/ galleries.length }}
+
+<a class="btn btn-large add-new" href="/gallery/create">Створити подію</a>
+<br/>
+<br/>
