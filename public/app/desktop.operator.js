@@ -12,7 +12,7 @@
 define(
     [ 'libs/app' ],
     function( app ) {
-        window.location.href = '/account/logout'
+        window.location.href = '/logout'
     });
 
 //console.log( '- desktop operator' );

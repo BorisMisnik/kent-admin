@@ -2,15 +2,15 @@
     {
         "//": "Login made here ( get `username` and `password` from PORT or GET )",
         "method": "post",
-        "url": "/account/login",
+        "url": "/login",
         "script": "./libs/account",
         "handler": "login",
         "auth": { "login": true }
     },
     {
-        "//": "Login made here ( get `username` and `password` from PORT or GET )",
+        "//": "Logout made here ( get `username` and `password` from PORT or GET )",
         "method": "get",
-        "url": "/account/logout",
+        "url": "/logout",
         "script": "./libs/account",
         "handler": "logout",
         "auth": { "logged": true }

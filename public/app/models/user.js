@@ -47,7 +47,7 @@ define(
                         'Login:', username,
                         'password:', password );
                     $.post(
-                        '/account/login', {
+                        '/login', {
                             username: username,
                             password: password
                         })
@@ -83,7 +83,7 @@ define(
 
                 logout: function() {
                     // query
-                    $.get( '/account/logout' )
+                    $.get( '/logout' )
                         .fail( function( def, type, status ) {
 //                            Backbone.log( 'logout: ajax fail', status );
                             callback( new Error( status ));
