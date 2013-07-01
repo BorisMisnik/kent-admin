@@ -18,7 +18,6 @@ var
     ObjectID = server.utils.ObjectID,
     // libs
     async = require( 'async' ),
-    hogan = require( 'hogan.js' ),
     fs = require( 'fs' );
 
 // todo: move to the database
