@@ -8,6 +8,7 @@
  */
 
 var server = require( 'piezo-server' ),
+    colors = require( 'colors' ),
     cards = server.libs.cards,
     check = server.utils.check,
     filter = server.utils.filter,
@@ -187,6 +188,10 @@ exports.photoUpload = function( req, res ) {
             { 'Content-Type': 'text/plain' },
             200
         );
+        // remove temp image file
+        if ( photo ) fs.unlink( photo.path, function( err ) {
+            console.log( 'temp file remove error'.red.bold, err );
+        });
     }
 };
 

@@ -13,7 +13,7 @@
         "url": "/logout",
         "script": "./libs/account",
         "handler": "logout",
-        "auth": { "logged": true }
+        "__auth": { "logged": true }
     },
     {
         "//": "Reset password and send it in the mail",
