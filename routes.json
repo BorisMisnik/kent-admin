@@ -257,6 +257,14 @@
                     "script": "./libs/gallery",
                     "handler": "photoRemove",
                     "auth": { "roles": [ "operator", "admin" ]}
+                },
+                {
+                    "//": "Gallery: Get all photos list from all albums",
+                    "method": "get",
+                    "url": "/gallery/all",
+                    "script": "./libs/gallery",
+                    "handler": "galleryAllPhotos",
+                    "auth": { "logged": true }
                 }
 
 ]

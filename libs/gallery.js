@@ -39,6 +39,36 @@ exports.galleryList = function( req, res ) {
         });
 };
 
+// galleryAllPhotos
+exports.galleryAllPhotos = function( req, res ) {
+    debugger;
+    cards.list(
+        { type: gallery },
+        { limit: 100 },
+        function( err, list ) {
+            if ( err ) return res.send({ error: { database: true }});
+            if ( !list || !list.length) return res.send({ success: [] });
+
+            // parse each photos from responce (for each album)
+            var photos = [],
+                url = '/photos/';
+            list.forEach( function( album ) {
+                if ( !album || !album.photos || !album.photos.length ) return;
+                album.photos.forEach( function( photo ) {
+
+                    photos = photos.concat({
+                        'large-photo': url + photo.name + '.' + photo.ext,
+                        'big-photo': url + photo.name + '_middle.' + photo.ext,
+                        'medium-photo': url + photo.name + '_small.' + photo.ext
+                    });
+
+                });
+            });
+            res.send({ success: photos });
+
+        });
+};
+
 // get gallery by id
 exports.galleryGet = function( req, res ) {
     var id = ObjectID( req.params.id );
@@ -190,7 +220,7 @@ exports.photoUpload = function( req, res ) {
         );
         // remove temp image file
         if ( photo ) fs.unlink( photo.path, function( err ) {
-            console.log( 'temp file remove error'.red.bold, err );
+            if ( err ) console.log( 'temp file remove error'.red.bold, err );
         });
     }
 };
