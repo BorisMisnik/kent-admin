@@ -233,6 +233,7 @@ exports.signupPromo =
                         auth.create(
                             {
                                 active: true,               // auto activate promo user
+                                role: 'visitor',
                                 login: profile.email,
                                 password: profile.password // todo md5
                             },
@@ -285,7 +286,7 @@ exports.signupPromo =
                                                         mail.send(
                                                             {
                                                                 from: opts.from,
-                                                                to: card.name +' <'+ card.email +'>',
+                                                                to: doc.name +' <'+ doc.email +'>',
                                                                 subject: opts.subject,
                                                                 body: text
                                                             },
