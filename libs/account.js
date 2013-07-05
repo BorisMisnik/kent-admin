@@ -198,6 +198,112 @@ exports.signup =
         });
     };
 
+exports.signupPromo =
+    function( req, res ) {
+        console.log( 'signup promo:', req.body );
+
+        if ( req.body.secret != 'M8235H27zo76065' )
+            return res.send({ error: { hack: true }});
+
+        normalizeSignup( req.body, function( err, profile ) {
+
+            // errors
+            if ( err ) {
+                console.log( 'fatal error', err );
+                err.error = true;
+                return res.json( err );
+            }
+
+            // check user already exists
+            auth.byLogin(
+                profile.email,
+                function( err, user ) {
+                    if ( err )
+                        return res.json({ error: err });
+                    if ( user ) {
+                        console.log( 'error' );
+                        res.json({
+                            error: 'Already used email address',
+                            already_used_email: true
+                        });
+                    }
+                    else {
+
+                        // register user
+                        auth.create(
+                            {
+                                active: true,               // auto activate promo user
+                                login: profile.email,
+                                password: profile.password // todo md5
+                            },
+                            function( err, stored ) {
+
+                                if ( err || !stored || !stored.length )
+                                    return res.send({ error: err || true, database: true });
+
+                                // create profile card
+                                var stored = stored[ 0 ],
+                                    data = server.utils.object.merge(
+                                        profile,
+                                        {
+                                            account_id: stored._id,
+                                            type: 'profile'
+                                        });
+                                cards.create( data,
+                                    function( err, doc ) {
+                                        console.log( 'created & registered', err, doc );
+                                        if ( err )
+                                            return res.send({ error: err || true });
+                                        // success
+                                        doc.success = true;
+                                        res.send( doc );
+
+                                        // compose mail
+
+                                        var opts = mailing.activate;
+                                        if ( opts && opts.template ) {
+                                            // render mail template
+                                            res.render(
+                                                opts.template,
+                                                {
+                                                    name: doc.name,
+                                                    login: stored.login,
+                                                    password: stored.password
+                                                },
+                                                function( err, text ) {
+                                                    console.log( 'render mail:', text );
+                                                    if ( !err && text ) {
+//
+//                                                        console.log( 'MAIL:', {
+//                                                            from: opts.from,
+//                                                            to: doc.name +' <'+ doc.email +'>',
+//                                                            subject: opts.subject,
+//                                                            body: text
+//                                                        });
+
+                                                        // send mail
+                                                        mail.send(
+                                                            {
+                                                                from: opts.from,
+                                                                to: card.name +' <'+ card.email +'>',
+                                                                subject: opts.subject,
+                                                                body: text
+                                                            },
+                                                            function( err, sent ) {
+                                                                if ( err )
+                                                                    console.log( 'Mail error'.red.bold, err );
+                                                            });
+                                                    }
+                                                });
+                                        }
+                                    });
+                            });
+
+                    }
+                });
+        }, true );      // promo flag (!)
+    };
+
 exports.user =
     function( req, res ) {
         console.log( 'get user' );
@@ -612,7 +718,7 @@ exports.permission =
  * @param fields
  * @param callback
  */
-function normalizeSignup( fields, callback )
+function normalizeSignup( fields, callback, promo )
 {
     if ( !callback ) return;
 
@@ -674,9 +780,11 @@ function normalizeSignup( fields, callback )
         errors.not_agree = true;
 
     // photo
-    // todo: photo upload check ( fs )
-    if ( !form.photo )
-        errors.photo = true;
+    if ( !promo ) {
+        // todo: photo upload check ( fs )
+        if ( !form.photo )
+            errors.photo = true;
+    }
 
     // todo: xss filters and other
 

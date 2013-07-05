@@ -48,6 +48,13 @@
         "handler": "signup"
     },
     {
+        "//": "Simplify promo-user signup (!)",
+        "method": "post",
+        "url": "/account/signup/promo",
+        "script": "./libs/account",
+        "handler": "signupPromo"
+    },
+    {
         "//": "Update single user profile ( card )",
         "method": "post",
         "url": "/account/profile",
