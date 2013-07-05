@@ -218,6 +218,14 @@
                     "auth": { "logged": true }
                 },
                 {
+                    "//": "Download photo",
+                    "method": "get",
+                    "url": "/download/photo/:photo",
+                    "script": "./libs/gallery",
+                    "handler": "photoDownload",
+                    "auth": { "logged": true }
+                },
+                {
                     "//": "Add new gallery record",
                     "method": "post",
                     "url": "/gallery/create",

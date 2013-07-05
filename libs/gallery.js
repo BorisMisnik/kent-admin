@@ -39,6 +39,18 @@ exports.galleryList = function( req, res ) {
         });
 };
 
+// download photo file
+exports.photoDownload = function( req, res ) {
+    console.log( 'Download photo', req.url, req.params, uploadsPath );
+    var photo = req.params.photo;
+    if ( !photo ) return res.send( 404 );
+    res.download( uploadsPath + photo,
+        function( err ) {
+            console.log( 'download error'.red.bold, err );
+            res.send( 404 );
+        });
+};
+
 // galleryAllPhotos
 exports.galleryAllPhotos = function( req, res ) {
     debugger;
