@@ -207,7 +207,8 @@
                     "url": "/gallery",
                     "script": "./libs/gallery",
                     "handler": "galleryList",
-                    "auth": { "roles": [ "operator", "admin" ]}
+                    "__auth": { "roles": [ "operator", "admin" ]},
+                    "auth": { "logged": true }
                 },
                 {
                     "//": "Add new gallery record",
