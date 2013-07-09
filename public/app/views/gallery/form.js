@@ -48,6 +48,7 @@ function( app ) {
 
             afterRender: function() {
                 var self = this;
+                var added = [];
 
                 // hooks
 
@@ -68,14 +69,18 @@ function( app ) {
                     })
                     .on( 'complete',
                         function( event, id, fileName, res ) {
+                            console.log( 'complete upload', arguments );
                             if ( res.success ) {
-//                                debugger;
-                                console.log( 'complete upload', arguments );
-                                var el = $( '<div class="thumb">\
-                                        <img src="/photos/'+ res.name +'_small.'+ res.ext +'" />\
-                                        <a class="photo-remove btn btn-block btn-danger capt" _id="'+ res.id +'" _name="'+ res.name +'">Видалити</a>\
-                                        </div>' );
-                                self.$( '.thumbnails' ).append( el );
+                                if (!~added.indexOf( id )) {
+                                    // prevent fineUploader bug: multiple event cast
+                                    added.push( id );
+                                    console.log( 'complete upload', arguments );
+                                    var el = $( '<div class="thumb">\
+                                            <img src="/photos/'+ res.name +'_small.'+ res.ext +'" />\
+                                            <a class="photo-remove btn btn-block btn-danger capt" _id="'+ res.id +'" _name="'+ res.name +'">Видалити</a>\
+                                            </div>' );
+                                    self.$( '.thumbnails' ).append( el );
+                                }
                                 //self.gallery.fetch();
                             }
                         });
