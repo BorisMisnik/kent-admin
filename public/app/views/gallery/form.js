@@ -69,9 +69,14 @@ function( app ) {
                     .on( 'complete',
                         function( event, id, fileName, res ) {
                             if ( res.success ) {
-                                debugger;
-                                console.log( 'res', res );
-                                self.gallery.fetch();
+//                                debugger;
+                                console.log( 'complete upload', arguments );
+                                var el = $( '<div class="thumb">\
+                                        <img src="/photos/'+ res.name +'_small.'+ res.ext +'" />\
+                                        <a class="photo-remove btn btn-block btn-danger capt" _id="'+ res.id +'" _name="'+ res.name +'">Видалити</a>\
+                                        </div>' );
+                                self.$( '.thumbnails' ).append( el );
+                                //self.gallery.fetch();
                             }
                         });
             },
