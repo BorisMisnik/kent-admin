@@ -307,7 +307,7 @@ exports.signupPromo =
 
 exports.user =
     function( req, res ) {
-        console.log( 'get user' );
+        console.log( 'get user!', req.headers.cookie );
         if ( req.user && req.user._id )
             res.send({ success: true });
         else
