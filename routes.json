@@ -281,6 +281,25 @@
                     "script": "./libs/gallery",
                     "handler": "galleryAllPhotos",
                     "auth": { "logged": true }
-                }
+                },
 
+
+                {
+                    "//": "thinks about kent",
+                    "method": "get",
+                    "url": "/think",
+                    "script": "./libs/think",
+                    "handler": "thinkList",
+                    "__auth": { "roles": [ "operator", "admin" ]},
+                    "auth": { "logged": true }
+                },
+                {
+                   "//": "save think",
+                    "method": "post",
+                    "url": "/think",
+                    "script": "./libs/think",
+                    "handler": "saveThink",
+                    "__auth": { "roles": [ "operator", "admin" ]},
+                    "auth": { "logged": true } 
+                }
 ]

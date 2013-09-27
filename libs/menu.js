@@ -29,6 +29,12 @@ var menu = {
                 title: 'Запитання',
                 state: 'requests'
                 //path: '/requests.js'
+            },
+            {
+                url: '/think',
+                title: 'Думка про кент',
+                state: 'thinks'
+                //path: '/requests.js'
             }
         ],
         admin: [
@@ -50,6 +56,7 @@ var menu = {
                 state: 'requests'
                 //path: '/requests.js'
             }
+           
 //            {
 //                url: '/logs',
 //                title: 'Журнали та звіти',
@@ -70,7 +77,6 @@ var menu = {
 
 exports.items =
     function( req, res ) {
-
         // todo: authorize
         if ( !req.user )
             return res.send([]);

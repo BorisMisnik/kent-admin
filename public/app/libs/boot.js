@@ -56,10 +56,8 @@ define(
                     return templates[ path ];
                 // load
                 var done = this.async();
-
                 $.get( 'app/' + path + extension )
                     .done( function( contents ) {
-
                         // hogan.js compiler
                         templates[ path ] = Hogan.compile( contents );
                         done( templates[ path ]);

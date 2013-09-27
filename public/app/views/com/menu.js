@@ -32,7 +32,6 @@ define(
                         // add routes
                         _.each( this.items.toJSON(),
                             function( item ) {
-                                //console.log( 'item', item );
                                 router.addStateRoute( '!' + item.url, item.state, item.path );
                             });
                         // show items

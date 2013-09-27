@@ -6,7 +6,6 @@
         "start": "node app"
     },
     "dependencies": {
-        "piezo-server": "*",
         "async": "*",
         "colors": "*",
         "gm": "1.9.2"

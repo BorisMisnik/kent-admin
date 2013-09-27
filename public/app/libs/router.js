@@ -21,6 +21,7 @@ define(
 
         // add route
         function addStateRoute ( route, state, url ) {
+            console.log( route );
             // urls
             if ( route && urls[ state ])
                 Backbone.log( 'Url of given State already exists!' );
