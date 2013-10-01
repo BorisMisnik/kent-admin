@@ -1,305 +1,321 @@
 [
-    {
-        "//": "Login made here ( get `username` and `password` from PORT or GET )",
-        "method": "post",
-        "url": "/login",
-        "script": "./libs/account",
-        "handler": "login",
-        "auth": { "login": true }
-    },
-    {
-        "//": "Logout made here ( get `username` and `password` from PORT or GET )",
-        "method": "get",
-        "url": "/logout",
-        "script": "./libs/account",
-        "handler": "logout",
-        "__auth": { "logged": true }
-    },
-    {
-        "//": "Reset password and send it in the mail",
-        "method": "post",
-        "url": "/account/remind",
-        "script": "./libs/account",
-        "handler": "remind"
-    },
+	{
+		"//": "Login made here ( get `username` and `password` from PORT or GET )",
+		"method": "post",
+		"url": "/login",
+		"script": "./libs/account",
+		"handler": "login",
+		"auth": { "login": true }
+	},
+	{
+		"//": "Logout made here ( get `username` and `password` from PORT or GET )",
+		"method": "get",
+		"url": "/logout",
+		"script": "./libs/account",
+		"handler": "logout",
+		"__auth": { "logged": true }
+	},
+	{
+		"//": "Reset password and send it in the mail",
+		"method": "post",
+		"url": "/account/remind",
+		"script": "./libs/account",
+		"handler": "remind"
+	},
 
 
 
-    {
-        "//": "Get user",
-        "method": "get",
-        "url": "/user",
-        "script": "./libs/account",
-        "handler": "user"
-    },
-    {
-        "//": "Get user info + Check is authorized ( and get user info, with role value )",
-        "method": "get",
-        "url": "/account",
-        "script": "./libs/account",
-        "handler": "account",
-        "auth": { "logged": true }
-    },
-    {
-        "//": "Sign up user (!)",
-        "method": "post",
-        "url": "/account/signup",
-        "script": "./libs/account",
-        "handler": "signup"
-    },
-    {
-        "//": "Simplify promo-user signup (!)",
-        "method": "post",
-        "url": "/account/signup/promo",
-        "script": "./libs/account",
-        "handler": "signupPromo"
-    },
-    {
-        "//": "Update single user profile ( card )",
-        "method": "post",
-        "url": "/account/profile",
-        "script": "./libs/account",
-        "handler": "updateProfile",
-        "auth": { "logged": true }
-    },
-    {
-        "//": "Update single user profile ( card )",
-        "method": "post",
-        "url": "/account/profile/:id",
-        "script": "./libs/account",
-        "handler": "updateProfile",
-        "auth": { "logged": true }
-    },
+	{
+		"//": "Get user",
+		"method": "get",
+		"url": "/user",
+		"script": "./libs/account",
+		"handler": "user"
+	},
+	{
+		"//": "Get user info + Check is authorized ( and get user info, with role value )",
+		"method": "get",
+		"url": "/account",
+		"script": "./libs/account",
+		"handler": "account",
+		"auth": { "logged": true }
+	},
+	{
+		"//": "Sign up user (!)",
+		"method": "post",
+		"url": "/account/signup",
+		"script": "./libs/account",
+		"handler": "signup"
+	},
+	{
+		"//": "Simplify promo-user signup (!)",
+		"method": "post",
+		"url": "/account/signup/promo",
+		"script": "./libs/account",
+		"handler": "signupPromo"
+	},
+	{
+		"//": "Update single user profile ( card )",
+		"method": "post",
+		"url": "/account/profile",
+		"script": "./libs/account",
+		"handler": "updateProfile",
+		"auth": { "logged": true }
+	},
+	{
+		"//": "Update single user profile ( card )",
+		"method": "post",
+		"url": "/account/profile/:id",
+		"script": "./libs/account",
+		"handler": "updateProfile",
+		"auth": { "logged": true }
+	},
 
 
 
-    {
-        "//": "Get accounts list",
-        "method": "get",
-        "url": "/accounts",
-        "script": "./libs/account",
-        "handler": "accountsList",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "Get accounts list ( with query parameters )",
-        "method": "post",
-        "url": "/accounts",
-        "script": "./libs/account",
-        "handler": "accountsList",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "Get accounts list ( with query parameters )",
-        "method": "get",
-        "url": "/accounts/totals/:type?",
-        "script": "./libs/account",
-        "handler": "totals",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "Get account information ( id or current )",
-        "method": "get",
-        "url": "/accounts/id/:id",
-        "script": "./libs/account",
-        "handler": "account",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "TODO: Update account information ( id or current )",
-        "method": "post",
-        "url": "/accounts/id/:id",
-        "script": "./libs/account",
-        "handler": "account",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "Get account Photo ( base64 )",
-        "method": "get",
-        "url": "/accounts/id/:id/photo",
-        "script": "./libs/account",
-        "handler": "photo",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "//": "Allow/deny account",
-        "method": "get",
-        "url": "/accounts/id/:id/permission/:action",
-        "script": "./libs/account",
-        "handler": "permission",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
+	{
+		"//": "Get accounts list",
+		"method": "get",
+		"url": "/accounts",
+		"script": "./libs/account",
+		"handler": "accountsList",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "Get accounts list ( with query parameters )",
+		"method": "post",
+		"url": "/accounts",
+		"script": "./libs/account",
+		"handler": "accountsList",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "Get accounts list ( with query parameters )",
+		"method": "get",
+		"url": "/accounts/totals/:type?",
+		"script": "./libs/account",
+		"handler": "totals",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "Get account information ( id or current )",
+		"method": "get",
+		"url": "/accounts/id/:id",
+		"script": "./libs/account",
+		"handler": "account",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "TODO: Update account information ( id or current )",
+		"method": "post",
+		"url": "/accounts/id/:id",
+		"script": "./libs/account",
+		"handler": "account",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "Get account Photo ( base64 )",
+		"method": "get",
+		"url": "/accounts/id/:id/photo",
+		"script": "./libs/account",
+		"handler": "photo",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"//": "Allow/deny account",
+		"method": "get",
+		"url": "/accounts/id/:id/permission/:action",
+		"script": "./libs/account",
+		"handler": "permission",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
 
 
-            {
-                "//": "Create feedback",
-                "method": "post",
-                "url": "/feedback",
-                "script": "./libs/feedback",
-                "handler": "feedback",
-                "auth": { "roles": [ "visitor", "operator", "admin" ]}
-            },
-            {
-                "//": "Get full feedbacks list",
-                "method": "get",
-                "url": "/feedback",
-                "script": "./libs/feedback",
-                "handler": "list",
-                "auth": { "roles": [ "operator", "admin" ]}
-            },
-            {
-                "//": "Answer feedback",
-                "method": "post",
-                "url": "/feedback/answer/:id",
-                "script": "./libs/feedback",
-                "handler": "answer",
-                "auth": { "roles": [ "operator", "admin" ]}
-            },
-            {
-                "//": "Remove feedback",
-                "method": "post",
-                "url": "/feedback/remove/:id",
-                "script": "./libs/feedback",
-                "handler": "remove",
-                "auth": { "roles": [ "operator", "admin" ]}
-            },
-            {
-                "//": "Get feedback record",
-                "method": "get",
-                "url": "/feedback/:id",
-                "script": "./libs/feedback",
-                "handler": "get",
-                "auth": { "roles": [ "operator", "admin" ]}
-            },
+			{
+				"//": "Create feedback",
+				"method": "post",
+				"url": "/feedback",
+				"script": "./libs/feedback",
+				"handler": "feedback",
+				"auth": { "roles": [ "visitor", "operator", "admin" ]}
+			},
+			{
+				"//": "Get full feedbacks list",
+				"method": "get",
+				"url": "/feedback",
+				"script": "./libs/feedback",
+				"handler": "list",
+				"auth": { "roles": [ "operator", "admin" ]}
+			},
+			{
+				"//": "Answer feedback",
+				"method": "post",
+				"url": "/feedback/answer/:id",
+				"script": "./libs/feedback",
+				"handler": "answer",
+				"auth": { "roles": [ "operator", "admin" ]}
+			},
+			{
+				"//": "Remove feedback",
+				"method": "post",
+				"url": "/feedback/remove/:id",
+				"script": "./libs/feedback",
+				"handler": "remove",
+				"auth": { "roles": [ "operator", "admin" ]}
+			},
+			{
+				"//": "Get feedback record",
+				"method": "get",
+				"url": "/feedback/:id",
+				"script": "./libs/feedback",
+				"handler": "get",
+				"auth": { "roles": [ "operator", "admin" ]}
+			},
 
 
-    {
-        "//": "Generate menu items list ( by role of user )",
-        "method": "get",
-        "url": "/menu/items",
-        "script": "./libs/menu",
-        "handler": "items",
-        "auth": { "logged": true }
-    },
+	{
+		"//": "Generate menu items list ( by role of user )",
+		"method": "get",
+		"url": "/menu/items",
+		"script": "./libs/menu",
+		"handler": "items",
+		"auth": { "logged": true }
+	},
 
 
-    {
-        "//": "Switch the Desktop ( will redirect to `desktop.*.js )",
-        "method": "get",
-        "url": "/app/desktop.js",
-        "script": "./libs/desktop",
-        "handler": "desktop",
-        "_auth": { "logged": true }
-    },
-    {
-        "method": "get",
-        "url": "/app/desktop.visitor.js",
-        "auth": { "roles": [ "visitor", "operator", "admin" ]}
-    },
-    {
-        "method": "get",
-        "url": "/app/desktop.operator.js",
-        "auth": { "roles": [ "operator", "admin" ]}
-    },
-    {
-        "method": "get",
-        "url": "/app/desktop.admin.js",
-        "auth": { "roles": [ "admin" ]}
-    },
+	{
+		"//": "Switch the Desktop ( will redirect to `desktop.*.js )",
+		"method": "get",
+		"url": "/app/desktop.js",
+		"script": "./libs/desktop",
+		"handler": "desktop",
+		"_auth": { "logged": true }
+	},
+	{
+		"method": "get",
+		"url": "/app/desktop.visitor.js",
+		"auth": { "roles": [ "visitor", "operator", "admin" ]}
+	},
+	{
+		"method": "get",
+		"url": "/app/desktop.operator.js",
+		"auth": { "roles": [ "operator", "admin" ]}
+	},
+	{
+		"method": "get",
+		"url": "/app/desktop.admin.js",
+		"auth": { "roles": [ "admin" ]}
+	},
 
 
-                {
-                    "//": "Galleries list",
-                    "method": "get",
-                    "url": "/gallery",
-                    "script": "./libs/gallery",
-                    "handler": "galleryList",
-                    "__auth": { "roles": [ "operator", "admin" ]},
-                    "auth": { "logged": true }
-                },
-                {
-                    "//": "Download photo",
-                    "method": "get",
-                    "url": "/download/photo/:photo",
-                    "script": "./libs/gallery",
-                    "handler": "photoDownload",
-                    "auth": { "logged": true }
-                },
-                {
-                    "//": "Add new gallery record",
-                    "method": "post",
-                    "url": "/gallery/create",
-                    "script": "./libs/gallery",
-                    "handler": "galleryCreate",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
-                {
-                    "//": "Get gallery record",
-                    "method": "get",
-                    "url": "/gallery/get/:id",
-                    "script": "./libs/gallery",
-                    "handler": "galleryGet",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
-                {
-                    "//": "Update gallery record",
-                    "method": "post",
-                    "url": "/gallery/update/:id",
-                    "script": "./libs/gallery",
-                    "handler": "galleryUpdate",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
-                {
-                    "//": "Remove gallery",
-                    "method": "post",
-                    "url": "/gallery/remove/:id",
-                    "script": "./libs/gallery",
-                    "handler": "galleryRemove",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
+				{
+					"//": "Galleries list",
+					"method": "get",
+					"url": "/gallery",
+					"script": "./libs/gallery",
+					"handler": "galleryList",
+					"__auth": { "roles": [ "operator", "admin" ]},
+					"auth": { "logged": true }
+				},
+				{
+					"//": "Download photo",
+					"method": "get",
+					"url": "/download/photo/:photo",
+					"script": "./libs/gallery",
+					"handler": "photoDownload",
+					"auth": { "logged": true }
+				},
+				{
+					"//": "Add new gallery record",
+					"method": "post",
+					"url": "/gallery/create",
+					"script": "./libs/gallery",
+					"handler": "galleryCreate",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Get gallery record",
+					"method": "get",
+					"url": "/gallery/get/:id",
+					"script": "./libs/gallery",
+					"handler": "galleryGet",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Update gallery record",
+					"method": "post",
+					"url": "/gallery/update/:id",
+					"script": "./libs/gallery",
+					"handler": "galleryUpdate",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Remove gallery",
+					"method": "post",
+					"url": "/gallery/remove/:id",
+					"script": "./libs/gallery",
+					"handler": "galleryRemove",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
 
-                {
-                    "//": "Upload photo",
-                    "method": "post",
-                    "url": "/gallery/photo/upload/:id",
-                    "script": "./libs/gallery",
-                    "handler": "photoUpload",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
-                {
-                    "//": "Remove photo",
-                    "method": "post",
-                    "url": "/gallery/photo/remove/:id/:name",
-                    "script": "./libs/gallery",
-                    "handler": "photoRemove",
-                    "auth": { "roles": [ "operator", "admin" ]}
-                },
-                {
-                    "//": "Gallery: Get all photos list from all albums",
-                    "method": "get",
-                    "url": "/gallery/all",
-                    "script": "./libs/gallery",
-                    "handler": "galleryAllPhotos",
-                    "auth": { "logged": true }
-                },
+				{
+					"//": "Upload photo",
+					"method": "post",
+					"url": "/gallery/photo/upload/:id",
+					"script": "./libs/gallery",
+					"handler": "photoUpload",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Remove photo",
+					"method": "post",
+					"url": "/gallery/photo/remove/:id/:name",
+					"script": "./libs/gallery",
+					"handler": "photoRemove",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Gallery: Get all photos list from all albums",
+					"method": "get",
+					"url": "/gallery/all",
+					"script": "./libs/gallery",
+					"handler": "galleryAllPhotos",
+					"auth": { "logged": true }
+				},
 
 
-                {
-                    "//": "thinks about kent",
-                    "method": "get",
-                    "url": "/think",
-                    "script": "./libs/think",
-                    "handler": "thinkList",
-                    "__auth": { "roles": [ "operator", "admin" ]},
-                    "auth": { "logged": true }
-                },
-                {
-                   "//": "save think",
-                    "method": "post",
-                    "url": "/think",
-                    "script": "./libs/think",
-                    "handler": "saveThink",
-                    "__auth": { "roles": [ "operator", "admin" ]},
-                    "auth": { "logged": true } 
-                }
+				{
+					"//": "get think list",
+					"method": "get",
+					"url": "/think",
+					"script": "./libs/think",
+					"handler": "thinkList",
+					"__auth": { "roles": [ "operator", "admin" ]},
+					"auth": { "logged": true }
+				},
+				{
+				   "//": "save think",
+					"method": "post",
+					"url": "/think",
+					"script": "./libs/think",
+					"handler": "saveThink",
+					"__auth": { "roles": [ "operator", "admin" ]},
+					"auth": { "logged": true } 
+				},
+				{
+					"//": "get think by id",
+					"method": "get",
+					"url": "/think/:id",
+					"script": "./libs/think",
+					"handler": "get",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "Remove think",
+					"method": "post",
+					"url": "/think/remove/:id",
+					"script": "./libs/think",
+					"handler": "remove",
+					"auth": { "roles": [ "operator", "admin" ]}
+				}
 ]

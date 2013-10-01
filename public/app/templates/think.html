@@ -1,31 +1,25 @@
 <h3>Ваша думка про кент HD</h3>
-	<div  id="thinks">
+	<div id="views" style="display:none;">
+		<table class="table">
+			<tr class="title">
+				<th>Запитання</th>
+				<th>Відповідь</th>
+			</tr>
+		</table>
 	</div>
-<script>
-	$.get('/think')
-		.done(function(result){
-			var template = '';
-			$('#thinks *').remove();
-			for (var i = 0; i < result.success.length; i++) {
-				var message =result.success[i].message;
-				template += '<h4> Имя: ' + message.user.name + '</h4>';
-				template += '<h4> Email: ' + message.user.email + '</h4>';
-				template += '<table class="table">';
-				template += '<tr>';
-					template += '<th>Питання</th>';
-					template += '<th>Відповідь</th>';
-				template += '</tr>';
-				for(key in message){
-					if( key === 'user' ) continue;
-					template += '<tr>';
-						template += '<td>' + key + '</td>';
-						template += '<td>' + message[key] + '</td>';
-					template += '</tr>';
-				}
-				template += '</table>';
-			};
-
-			$('#thinks').append($.parseHTML(template));
-		});
-
-</script>
+	<table class="table">
+		<tr>
+			<th>Ім'я</th>
+			<th>Почта</th>
+			<th>Переглянути</th>
+			<th>Видалити</th>
+		</tr>
+		{{# thinks }}
+		<tr>
+			<td>{{ name }}</td>	
+			<td>{{ email }}</td>	
+			<td><a href="#" class="thinklist-view btn btn-success" _id="{{ _id }}">Переглянути</a></td>	
+			<td><a href="#" class="thinklist-remove btn btn-danger" _id="{{ _id }}">Видалити</a></td>	
+		</tr>
+		{{/ thinks }}
+	</table>

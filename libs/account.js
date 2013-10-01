@@ -149,6 +149,7 @@ exports.signup =
 										account_id: stored._id,
 										type: 'profile'
 									});
+								console.log('cards crate data', data );
 								cards.create( data,
 									function( err, doc ) {
 										console.log( 'created & registered', err, doc );

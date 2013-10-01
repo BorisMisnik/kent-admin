@@ -55,6 +55,12 @@ var menu = {
                 title: 'Запитання',
                 state: 'requests'
                 //path: '/requests.js'
+            },
+            {
+                url: '/think',
+                title: 'Думка про кент',
+                state: 'thinks'
+                //path: '/requests.js'
             }
            
 //            {

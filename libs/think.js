@@ -1,4 +1,5 @@
 var server = require( 'piezo-server' ),
+	ObjectID = server.utils.ObjectID,
 	cards = server.libs.cards;
 	
 exports.thinkList = function(req, res){
@@ -9,7 +10,8 @@ exports.thinkList = function(req, res){
 			if ( err || !list ) return res.send('error', 400);
 			res.send({success : list});
 		});
-}
+};
+
 exports.saveThink = function(req, res){
 	// store
 	cards.create({
@@ -25,4 +27,28 @@ exports.saveThink = function(req, res){
 		// success
 		res.send('ok', 200);
 	});
+};
+
+exports.get = function(req, res){
+	
+	var id = ObjectID( req.params.id );
+	if ( !id ) return res.send({ error: { id: true }});
+	cards.get(
+		{ type: 'think', _id: id },
+		function( err, feedback ) {
+			if ( err ) return res.send({ error: { database: true }});
+			if ( !feedback ) return res.send({ error: { not_found: true }});
+			res.send({ success: feedback });
+		});
+};
+
+exports.remove = function(req, res){
+	var id = ObjectID( req.params.id );
+	cards.remove(
+		{ type: 'think', _id: id },
+		function( err, removed ) {
+			if ( err ) return res.send({ error: { database: true }});
+
+			res.send({ success: removed });
+		});
 }
