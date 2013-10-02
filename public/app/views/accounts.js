@@ -26,7 +26,8 @@ define(
                         activate: { active: true, count: 1 },
                         inactive: { active: false },
                         import: { active: false },
-                        review: { active: false }
+                        review: { active: false },
+                        promo: {active: false}
                     },
                     itemsPerPage: 20,
                     itemsCount: 1,
@@ -98,11 +99,13 @@ define(
                             tots.push( this.filters.import.count );
                         if ( this.filters.review.active )
                             tots.push( this.filters.review.count );
+                        if ( this.filters.promo.active )
+                            tots.push( this.filters.promo.count );
                         if ( !this.filters.activate.active
                             && !this.filters.inactive.active
                             && !this.filters.import.active
                             && !this.filters.review.active
-                            && !this.filters.review.active )
+                            && !this.filters.promo.active )
                             tots.push( totals.all );
                         this.itemsCount = Math.max.apply( this, tots );
                         // totals
@@ -110,6 +113,7 @@ define(
                         this.filters.inactive.count = totals.inactive;
                         this.filters.import.count = totals.import;
                         this.filters.review.count = totals.review;
+                        this.filters.promo.count = totals.promo;
 
                         // paginator
                         this.paginator.prev =
@@ -156,7 +160,8 @@ define(
                                 activate: this.filters.activate.active,
                                 inactive: this.filters.inactive.active,
                                 import: this.filters.import.active,
-                                review: this.filters.review.active
+                                review: this.filters.review.active,
+                                promo : this.filters.promo.active
                             },
                             paginator = {
                                 limit: this.itemsPerPage,

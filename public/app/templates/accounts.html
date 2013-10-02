@@ -38,6 +38,14 @@
         </li>
         {{/ import }}
 
+        {{# promo }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a data-filter="promo" href="#">
+                Спрощена реєстрація {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ promo }}
+
     </ul>
     {{/ filters }}
 

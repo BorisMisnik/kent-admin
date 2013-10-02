@@ -233,7 +233,8 @@ exports.signupPromo =
 						// register user
 						auth.create(
 							{
-								active: true,               // auto activate promo user
+								active: true,           // auto activate promo user
+								promo : true,
 								role: 'visitor',
 								login: profile.email,
 								password: profile.password // todo md5
@@ -449,6 +450,9 @@ exports.accountsList =
 //            else
 //            if ( 'false' == filters.review )
 //                cond.push({ review: { $ne: true }});
+			// promo
+			if ( 'true' == filters.promo )
+				cond.push({ promo: true });
 		}
 		// paginator
 		if ( paginator ) {
