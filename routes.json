@@ -22,7 +22,14 @@
 		"script": "./libs/account",
 		"handler": "remind"
 	},
-
+	{
+		"//": "promo authorized",
+		"method": "get",
+		"url": "/auth/promo",
+		"script": "./libs/account",
+		"handler": "promo",
+		"__auth": { "logged": true }
+	},
 
 
 	{
@@ -208,6 +215,7 @@
 	},
 
 
+
 				{
 					"//": "Galleries list",
 					"method": "get",
@@ -316,6 +324,61 @@
 					"url": "/think/remove/:id",
 					"script": "./libs/think",
 					"handler": "remove",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "passwords",
+					"method": "get",
+					"url": "/passwords",
+					"script": "./libs/passwords",
+					"handler": "index",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "get .txt passwords",
+					"method": "get",
+					"url": "/download/password",
+					"script": "./libs/passwords",
+					"handler": "download",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "cratePasswords",
+					"method": "get",
+					"url": "/cratePasswords",
+					"script": "./libs/passwords",
+					"handler": "cratePasswords",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "get list unsibscriber",
+					"method": "get",
+					"url": "/unsibscriber",
+					"script": "./libs/unsibscribe",
+					"handler": "list",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "save new email",
+					"method": "post",
+					"url": "/unsibscriber",
+					"script": "./libs/unsibscribe",
+					"handler": "save"
+				},
+				{
+					"//": "Remove email",
+					"method": "post",
+					"url": "/unsibscriber/:id",
+					"script": "./libs/unsibscribe",
+					"handler": "remove",
+					"auth": { "roles": [ "operator", "admin" ]}
+				},
+				{
+					"//": "get .txt emails",
+					"method": "get",
+					"url": "/download/emails",
+					"script": "./libs/unsibscribe",
+					"handler": "donwload",
 					"auth": { "roles": [ "operator", "admin" ]}
 				}
 ]

@@ -35,6 +35,18 @@ var menu = {
                 title: 'Думка про кент',
                 state: 'thinks'
                 //path: '/requests.js'
+            },
+            {
+                url: '/passwords',
+                title: 'Створити паролі',
+                state: 'passwords'
+                //path: '/requests.js'
+            },
+            {
+                url: '/unsibscriber',
+                title: 'Відписка',
+                state: 'unsibscriber'
+                //path: '/requests.js'
             }
         ],
         admin: [
@@ -60,6 +72,18 @@ var menu = {
                 url: '/think',
                 title: 'Думка про кент',
                 state: 'thinks'
+                //path: '/requests.js'
+            },
+            {
+                url: '/passwords',
+                title: 'Створити паролі',
+                state: 'passwords'
+                //path: '/requests.js'
+            },
+            {
+                url: '/unsibscriber',
+                title: 'Відписка',
+                state: 'unsibscriber'
                 //path: '/requests.js'
             }
            

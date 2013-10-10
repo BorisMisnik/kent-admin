@@ -27,7 +27,8 @@ define(
                         inactive: { active: false },
                         import: { active: false },
                         review: { active: false },
-                        promo: {active: false}
+                        sms: {active: false},
+                        email: {active: false}
                     },
                     itemsPerPage: 20,
                     itemsCount: 1,
@@ -69,7 +70,7 @@ define(
                             list = this.collection.toJSON(),
                             filtered = [],
                             values = {};
-
+                        console.log( totals );
                         if ( list.error )
                             // has errors
                             return { error: true, errors: list };
@@ -99,13 +100,19 @@ define(
                             tots.push( this.filters.import.count );
                         if ( this.filters.review.active )
                             tots.push( this.filters.review.count );
-                        if ( this.filters.promo.active )
-                            tots.push( this.filters.promo.count );
+                        // sms
+                        if ( this.filters.sms.active )
+                            tots.push( this.filters.sms.count );
+                        // email
+                        if ( this.filters.email.active )
+                            tots.push( this.filters.email.count );
+ 
                         if ( !this.filters.activate.active
                             && !this.filters.inactive.active
                             && !this.filters.import.active
                             && !this.filters.review.active
-                            && !this.filters.promo.active )
+                            && !this.filters.sms.active
+                            && this.filters.email.active )
                             tots.push( totals.all );
                         this.itemsCount = Math.max.apply( this, tots );
                         // totals
@@ -113,8 +120,10 @@ define(
                         this.filters.inactive.count = totals.inactive;
                         this.filters.import.count = totals.import;
                         this.filters.review.count = totals.review;
-                        this.filters.promo.count = totals.promo;
-
+                        // sms total
+                         this.filters.sms.count = totals.sms;
+                         // email total
+                         this.filters.email.count = totals.email;
                         // paginator
                         this.paginator.prev =
                             1 != this.paginator.page;
@@ -151,6 +160,7 @@ define(
                             filters: this.filters,
                             paginator: this.paginator
                         };
+
                         //console.log( 'serialize accounts:', values );
                         return values;
                     },
@@ -161,8 +171,9 @@ define(
                                 inactive: this.filters.inactive.active,
                                 import: this.filters.import.active,
                                 review: this.filters.review.active,
-                                promo : this.filters.promo.active
-                            },
+                                sms : this.filters.sms.active,
+                                email : this.filters.email.active
+                            },                                                         
                             paginator = {
                                 limit: this.itemsPerPage,
                                 skip: (( this.paginator.page || 1 ) -1 ) * this.itemsPerPage

@@ -1,0 +1,17 @@
+<h3>Відписчики</h3>
+	<table class="table">
+		<tr>
+			<th>Email</th>
+			<th>Видалити</th>
+		</tr>
+		{{# data }}
+		<tr>
+			<td>{{ email }}</td>	
+			<td><a href="#" class="remove btn btn-danger" _id="{{ _id }}">Видалити</a></td>	
+		</tr>
+		{{/ data }}
+	</table>
+
+	<a id="lis" class="btn btn-info btn-large" style="margin-top:50px;" href="/download/emails">
+		Завантажити список адресів
+	</a>

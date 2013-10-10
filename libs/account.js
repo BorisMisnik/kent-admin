@@ -114,7 +114,7 @@ exports.signup =
 				err.error = true;
 				return res.json( err );
 			}
-
+			console.log(profile);
 			// check user already exists
 			auth.byLogin(
 				profile.email,
@@ -229,7 +229,6 @@ exports.signupPromo =
 						});
 					}
 					else {
-
 						// register user
 						auth.create(
 							{
@@ -237,7 +236,9 @@ exports.signupPromo =
 								promo : true,
 								role: 'visitor',
 								login: profile.email,
-								password: profile.password // todo md5
+								password: profile.password, // todo md5
+								promo_password : profile.promo_password,
+								promo_login : profile.promo_login
 							},
 							function( err, stored ) {
 
@@ -450,9 +451,12 @@ exports.accountsList =
 //            else
 //            if ( 'false' == filters.review )
 //                cond.push({ review: { $ne: true }});
-			// promo
-			if ( 'true' == filters.promo )
-				cond.push({ promo: true });
+			// sms
+			if ( 'true' == filters.sms )
+				cond.push({ category: 'sms' });
+			// email
+			if ( 'true' == filters.email )
+				cond.push({ category: 'email' });
 		}
 		// paginator
 		if ( paginator ) {
@@ -533,7 +537,7 @@ exports.accountsList =
 					});
 
 					console.log( 'results (len):', users.length );
-
+					console.log( users );
 					// results
 					res.send( users );
 				});
@@ -570,6 +574,14 @@ exports.totals =
 		queue.push( function( next ) {
 			auth.count({ review: true }, next );
 		});
+		// sms
+		queue.push( function( next ) {
+			auth.count({ category : 'sms' }, next );
+		});
+		// email
+		queue.push( function( next ) {
+			auth.count({ category : 'email' }, next );
+		});
 		// call
 		async.parallel( queue,
 			function( err, total ) {
@@ -584,7 +596,9 @@ exports.totals =
 					activate: total.shift(),
 					inactive: total.shift(),
 					import: total.shift(),
-					review: total.shift()
+					review: total.shift(),
+					sms : total.shift(),
+					email : total.shift()
 				});
 			})
 	};
@@ -702,6 +716,18 @@ exports.permission =
 		});
 	};
 
+exports.promo = function(req, res){
+	auth.byUsernameLogin( 
+		req.body.username || req.body.promo_login, 
+		req.body.promo_password || req.body.password,
+		function(err, user){
+			if( err || !user ) return res.send({ error: { hack: true }});
+			return res.send({ 
+				success: { promo: true },
+				user : user
+			});
+	});
+}
 
 // Validators
 
@@ -740,7 +766,9 @@ function normalizeSignup( fields, callback, promo )
 			agree_age: fields.agree_age == 'true',
 			agree_rules: fields.agree_rules == 'true',
 			agree_info: fields.agree_info == 'true',
-			photo: String( fields.photo || '' )
+			photo: String( fields.photo || '' ),
+			promo_login : String( fields.promo_login || '' ),
+			promo_password : String( fields.promo_password || '' )
 		},
 		errors = {};
 

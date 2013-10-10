@@ -9,7 +9,7 @@
         {{# activate }}
         <li {{# active }}class="active"{{/ active }}>
             <a data-filter="activate" href="#">
-                Активні <!-- {{# count }}({{ count }}){{/ count }} !} -->
+                Активні {{# count }}({{ count }}){{/ count }}
             </a>
         </li>
         {{/ activate }}
@@ -38,13 +38,21 @@
         </li>
         {{/ import }}
 
-        {{# promo }}
+        {{# sms }}
         <li {{# active }}class="active"{{/ active }}>
-            <a data-filter="promo" href="#">
-                Спрощена реєстрація {{# count }}({{ count }}){{/ count }}
+            <a data-filter="sms" href="#">
+                SMS {{# count }}({{ count }}){{/ count }}
             </a>
         </li>
-        {{/ promo }}
+        {{/ sms }}
+
+        {{# email }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a data-filter="email" href="#">
+                E-mail {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ email }}
 
     </ul>
     {{/ filters }}
