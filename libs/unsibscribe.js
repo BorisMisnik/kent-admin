@@ -54,10 +54,9 @@ exports.donwload = function(req, res){
 			});
 			file.end(function(){
 				res.download(path, function(err){
-					console.log('err !!!!!!!!!!!!',  err );
 					if( err ){
 						console.log( err );
-						res.send(404);
+						res.send(404); 
 					}
 				});
 			});	
