@@ -8,88 +8,88 @@ exports.index = function (req, res) {
 	// 
 };
 exports.cratePasswords = function(req, res){
-	var i = 10000;
+	var i = 2;
 	var n = 0;
 	// crate email
 	while(i){
 		crypto.randomBytes(3, function(ex, buf) {
 			var token = buf.toString('hex');
-			cretaEmail(token);
+			cretaSms(token);
 		});
 		i--;
 	};
 
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaEmail(token);
-		});
-		i--;
-	}
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaEmail(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaEmail(token);
-		});
-		i--;
-	}
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaEmail(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaEmail(token);
-		});
-		i--;
-	}
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaEmail(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaEmail(token);
-		});
-		i--;
-	}
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaEmail(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 16147;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaEmail(token);
-		});
-		i--;
-	}
-	// crate sms
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaSms(token);
-		});
-		i--;
-	}
+	// var i = 16147;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaEmail(token);
+	// 	});
+	// 	i--;
+	// }
+	// // crate sms
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaSms(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 10000;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaSms(token);
-		});
-		i--;
-	}
+	// var i = 10000;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaSms(token);
+	// 	});
+	// 	i--;
+	// }
 
-	var i = 9034;
-	while(i){
-		crypto.randomBytes(3, function(ex, buf) {
-			var token = buf.toString('hex');
-			cretaSms(token);
-		});
-		i--;
-	}
+	// var i = 9034;
+	// while(i){
+	// 	crypto.randomBytes(3, function(ex, buf) {
+	// 		var token = buf.toString('hex');
+	// 		cretaSms(token);
+	// 	});
+	// 	i--;
+	// }
 	res.send('success');
 };
 
@@ -145,8 +145,10 @@ exports.download = function(req, res){
 		passwords.forEach(function(v) { file.write(v) + '\r\n'; });
 		file.end(function(){
 			res.download(path, function(err){
-					if( err ) console.log( err );
-				res.send(404);
+				if( err ){
+					console.log( err );
+					res.send(404);
+				}
 			})
 		});	
 	};

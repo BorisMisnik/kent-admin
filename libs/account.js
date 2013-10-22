@@ -412,7 +412,6 @@ exports.updateProfile = function( req, res ) {
 
 exports.accountsList =
 	function( req, res ) {
-
 		//var _roles = roles.slice( 0, roles.indexOf( req.user.role ));
 		// if ( !_roles.length ) return res.send( [] );     // no users of self-available roles
 
@@ -425,20 +424,33 @@ exports.accountsList =
 			// paginator (skip)
 			skip = 0;
 
-		console.log( 'filters:', filters );
-
 		// filters
 		if ( filters ) {
 
 			// active
 			if ( 'true' == filters.activate )
-				cond.push({ active: true });
-//            // inactive
+				cond.push({ 
+					$and : [
+						{ active: true },
+						{ login: { $ne : 'email'} },
+						{ login: { $ne : 'sms'} },
+						{ login: {$exists: true} }
+					]
+				});
+//            // inactive"promo_login" : "sms"
 //            if ( 'false' == filters.activate )
 //                cond.push({ active: { $ne: true }});
 			// inactive
 			if ( 'true' == filters.inactive )
-				cond.push({ active: { $ne: true }});
+				// cond.push({ active: { $ne: true }});
+				cond.push({ 
+					$and : [
+						{ active: { $ne: true } },
+						{ login: { $ne : 'email'} },
+						{ login: { $ne : 'sms'} } ,
+						{ login: {$exists: true} }
+					]
+				});	
 			// imported
 			if ( 'true' == filters.import )
 				cond.push({ imported: true });
@@ -507,9 +519,9 @@ exports.accountsList =
 								},
 								function( err, account ) {
 									if ( err ) return next( err );
-									if ( !account ) return next( new Error( 'Not exists account' ));
-									// remove photo (because of traffic)
-									account.photo = !!account.photo;
+									// if ( !account ) return next( new Error( 'Not exists account' ));
+									// // remove photo (because of traffic)
+									// account.photo = !!account.photo;
 									next( null, account );
 								});
 						})
@@ -528,11 +540,15 @@ exports.accountsList =
 						return res.send( users );
 
 					// add card to user record ( each )
+
 					results.forEach( function( card ) {
 						users.forEach( function( user ) {
-							// find linked user ( by card's `account_id` )
-							if ( ''+ user._id == ''+ card.account_id )
-								user.profile = card;
+							if( card ){
+								// find linked user ( by card's `account_id` )
+								if ( ''+ user._id == ''+ card.account_id )
+									user.profile = card;
+							}
+							
 						});
 					});
 
@@ -556,15 +572,28 @@ exports.totals =
 		});
 		// activate
 		queue.push( function( next ) {
-			auth.count({ active: true }, next );
+			auth.count({ 
+				$and : [
+					{ active: true },
+					{ login: { $ne : 'email'} },
+					{ login: { $ne : 'sms'} },
+					{ login: {$exists: true} },
+				] }, next );
 		});
 //        // imported activate
 //        queue.push( function( next ) {
 //            auth.count({ active: true, imported:true }, next );
 //        });
-		// inative
+		// inactive
 		queue.push( function( next ) {
-			auth.count({ active: { $ne: true }}, next );
+			auth.count({
+				$and : [
+					{ active: { $ne: true } },
+					{ login: { $ne : 'email'} },
+					{ login: { $ne : 'sms'} } ,
+					{ login: {$exists: true} }
+				]
+			}, next );
 		});
 		// imported
 		queue.push( function( next ) {
