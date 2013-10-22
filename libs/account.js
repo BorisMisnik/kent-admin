@@ -519,9 +519,9 @@ exports.accountsList =
 								},
 								function( err, account ) {
 									if ( err ) return next( err );
-									// if ( !account ) return next( new Error( 'Not exists account' ));
-									// // remove photo (because of traffic)
-									// account.photo = !!account.photo;
+									if ( !account ) return next( new Error( 'Not exists account' ));
+									// remove photo (because of traffic)
+									account.photo = !!account.photo;
 									next( null, account );
 								});
 						})
