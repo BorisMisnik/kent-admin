@@ -1,4 +1,36 @@
 <h3>Ваша думка про кент HD</h3>
+
+	{{# paginator }}
+	<!-- Pager -->
+	<ul class="pager">
+
+		{{# prev }}
+		<li class="previous">
+			<a href="/accounts/page/{{ prev }}">
+				&larr; Попередні
+			</a>
+		</li>
+		{{/ prev }}
+
+		{{# page }}
+		<li class="">
+			<strong>
+				Сторiнка {{ page }}
+			</strong>
+		</li>
+		{{/ page }}
+
+		{{# next }}
+		<li class="next">
+			<a href="/accounts/page/{{ next }}">
+				Наступні &rarr;
+			</a>
+		</li>
+		{{/ next }}
+
+	</ul>
+	{{/ paginator }}
+
 	<div id="views" style="display:none;">
 		<table class="table">
 			<tr class="title">
@@ -11,15 +43,102 @@
 		<tr>
 			<th>Ім'я</th>
 			<th>Почта</th>
+			<th>Фото</th>
+			<th>Профайл</th>
 			<th>Переглянути</th>
 			<th>Видалити</th>
 		</tr>
 		{{# thinks }}
 		<tr>
 			<td>{{ name }}</td>	
-			<td>{{ email }}</td>	
+			<td>{{ email }}</td>
+			<td><a href="#" class="profile-foto btn btn-info" _id="{{ account_id }}">Фото</a></td>
+			<td><a href="#" class="profile-view btn btn-info" _id="{{ account_id }}">Профайл</a></td>
 			<td><a href="#" class="thinklist-view btn btn-success" _id="{{ _id }}">Переглянути</a></td>	
 			<td><a href="#" class="thinklist-remove btn btn-danger" _id="{{ _id }}">Видалити</a></td>	
 		</tr>
 		{{/ thinks }}
 	</table>
+	 <!-- Modal: Photo -->
+	<div id="modalPhoto" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<!--<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+			<h3 class="myModalLabel">Photo preview:</h3>
+		</div>-->
+		<div class="modal-body">
+			<img id="modalPhotoImage" width="100%"/>
+		</div>
+		<div class="modal-footer">
+			<button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+		</div>
+	</div>
+	 <!-- Modal: Profile -->
+	<div id="modalProfile" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3>Profile Form:</h3>
+        </div>
+        <div class="modal-body">
+
+            <form id="modalProfileForm" class="form-horizontal" >
+
+                <!-- name -->
+                <div class="control-group name">
+                    <label class="control-label" for="name">П. I. Б.</label>
+                    <div class="controls">
+                        <input type="text" id="name" name="name" placeholder="П. I. Б.">
+                    </div>
+                </div>
+
+                <!-- phone -->
+                <div class="control-group phone">
+                    <label class="control-label" for="phone">Мобiльний телефон</label>
+                    <div class="controls">
+                        <input type="text" id="phone" name="phone" placeholder="0 (00) 000-00-00">
+                    </div>
+                </div>
+
+                <!-- birth date -->
+                <div class="control-group birth day">
+                    <label class="control-label" for="day">День народження</label>
+                    <div class="controls">
+                        <input type="text" id="day" name="day" placeholder="День">
+                    </div>
+                </div>
+                <div class="control-group birth month">
+                    <label class="control-label" for="month">Мiсяць</label>
+                    <div class="controls">
+                   		<input type="text" id="month" name="month" placeholder="Місяць">
+                   	</div>
+                </div>
+                <div class="control-group birth year">
+                    <label class="control-label" for="year">Рiк</label>
+                    <div class="controls">
+                        <input type="text" id="year" name="year" placeholder="0000">
+                    </div>
+                </div>
+
+                <!-- email -->
+                <div class="control-group email">
+                    <label class="control-label" for="email">Email</label>
+                    <div class="controls">
+                        <input type="text" id="email" name="email" placeholder="Email">
+                    </div>
+                </div>
+
+                <!-- password -->
+                <div class="control-group password">
+                    <label class="control-label" for="password">Password</label>
+                    <div class="controls">
+                        <input type="password" id="password" name="password" placeholder="Password">
+                    </div>
+                </div>
+
+            </form>
+
+
+        </div>
+        <div class="modal-footer">
+            <button class="btn" data-dismiss="modal" aria-hidden="true">Закрити</button>
+        </div>
+    </div>

@@ -17,10 +17,20 @@ function( app ) {
 	Think = Backbone.Layout.extend({
 		thinks: new Thinks(),
 		template: 'think',
-
+		itemsPerPage: 10,
+        itemsCount: 1,
+		paginator: {
+			page: 1,
+			prev: 0,
+			next: 0
+		},
 		events: {
 				'click .thinklist-view': 'doView',
-				'click .thinklist-remove': 'doRemove'
+				'click .thinklist-remove': 'doRemove',
+				'click .next': 'pageNext',
+				'click .previous': 'pagePrev',
+				'click .profile-view' : 'profileView',
+				'click .profile-foto ' : 'profilePhoto'
 		},
 
 		initialize: function() {
@@ -31,8 +41,15 @@ function( app ) {
 
 		serialize: function() {
 			var thinks = this.thinks.toJSON();
+			var self = this;
+			this.paginator.prev =
+				1 != this.paginator.page;
+			this.paginator.next =
+				thinks.length == this.itemsPerPage;
+
 			return {
-				thinks: thinks
+				thinks: thinks,
+				paginator: this.paginator
 			};
 		},
 
@@ -72,6 +89,84 @@ function( app ) {
 			}	
 			$('#views').show();
 			$(template).insertAfter('.title');
+		},
+		pageNext: function( e ) {
+			e.preventDefault();
+			console.log( this.paginator.page );
+			console.log( this.itemsPerPage );
+			console.log( this.itemsCount );
+			// if ( this.paginator.page * this.itemsPerPage <= this.itemsCount ) {
+				this.paginator.page++;
+				this.query();
+			// }
+		},
+
+		pagePrev: function( e ) {
+			e.preventDefault();
+			if ( this.paginator.page > 1 ) {
+				this.paginator.page--;
+				this.query();
+			}
+		},
+
+		query: function(e){
+			var data  = {
+				limit: this.itemsPerPage,
+				skip: (( this.paginator.page || 1 ) -1 ) * this.itemsPerPage
+			};
+
+
+			this.thinks.fetch({
+				data: data,
+				type: 'GET'
+			});
+
+		},
+
+		profileView : function(e){
+			var id = $(e.target).attr('_id');
+			var self = this;
+			// ajax
+			$.get( '/account', {_id : id})
+				.done( function( res ) {
+					self.populateForm( res.profile );
+				});
+			return false;
+		},
+
+		profilePhoto : function(e){
+			var id = $(e.target).attr('_id');
+			// ajax
+			$.get( '/accounts/id/'+ id +'/photo' )
+				.done( function( res ) {
+					if ( !res || !res.success || !res.photo ) return;
+					// show image
+					$('#modalPhotoImage').attr( 'src', res.photo )
+					$('#modalPhoto').modal('show');
+				});
+
+			return false;
+		},
+		populateForm: function( model ) {
+						//console.log( 'populdate:', model.toJSON());
+			var self = this,
+				form = $( '#modalProfile' );
+			// id
+			form.attr( 'data-account', model._id);
+			// name
+			form.find( '#name').val( model.name );
+			// phone
+			form.find( '#phone').val( model.phone );
+			// birth date:
+			form.find( '#day').val( model.day );
+			form.find( '#month').val( model.month );
+			form.find( '#year').val( model.year );
+			// email
+			form.find( '#email').val( model.email );
+			// password
+			form.find( '#password' ).val( model.password);
+
+			form.modal('show');
 		}
 
 	});

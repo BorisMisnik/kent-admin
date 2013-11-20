@@ -3,9 +3,13 @@ var server = require( 'piezo-server' ),
 	cards = server.libs.cards;
 	
 exports.thinkList = function(req, res){
+	var options = {
+		limit : req.query.limit || 10,
+		skip : req.query.skip || 0
+	}
 	cards.list(
 		{ type: 'think' },
-		{ limit: 10000 },     
+		options,     
 		function( err, list ) {
 			if ( err || !list ) return res.send('error', 400);
 			res.send({success : list});
