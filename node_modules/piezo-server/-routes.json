@@ -1,0 +1,139 @@
+[
+    {
+        "//": "Login made here ( get `username` and `password` from PORT or GET )",
+        "method": "get",
+        "url": "/account/login",
+        "script": "./libs/account",
+        "handler": "login",
+        "auth": { "login": true }
+    },
+    {
+        "//": "Login made here ( get `username` and `password` from PORT or GET )",
+        "method": "get",
+        "url": "/account/logout",
+        "script": "./libs/account",
+        "handler": "logout",
+        "auth": { "logged": true }
+    },
+
+
+    {
+        "//": "Check is authorized ( and get user info, with role value )",
+        "method": "get",
+        "url": "/account",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "logged": true }
+    },
+    {
+        "//": "Sign up user (!)",
+        "method": "post",
+        "url": "/account/signup",
+        "script": "./libs/account",
+        "handler": "signup"
+    },
+    {
+        "//": "Get account information ( id or current )",
+        "method": "get",
+        "url": "/account/id/:id",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "//": "Update account information ( id or current )",
+        "method": "post",
+        "url": "/account/id/:id",
+        "script": "./libs/account",
+        "handler": "account",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+
+
+
+    {
+        "//": "Generate menu items list ( by role of user )",
+        "method": "get",
+        "url": "/menu/items",
+        "script": "./libs/menu",
+        "handler": "items",
+        "auth": { "logged": true }
+    },
+
+
+    {
+        "//": "Switch the Desktop ( will redirect to `desktop.*.js )",
+        "method": "get",
+        "url": "/desktop.js",
+        "script": "./libs/desktop",
+        "handler": "desktop",
+        "auth": { "logged": true }
+    },
+    {
+        "method": "get",
+        "url": "/app/desktop.operator.js",
+        "auth": { "roles": [ "operator", "admin" ]}
+    },
+    {
+        "method": "get",
+        "url": "/app/desktop.admin.js",
+        "auth": { "roles": [ "admin" ]}
+    },
+
+
+
+
+
+
+    {
+        "method": "get",
+        "url": "/auth/logout",
+        "script": "./libs/login",
+        "handler": "logout",
+        "auth": {
+            "logged": true,
+            "success": "/",
+            "fail": "/login"
+        }
+    },
+    {
+        "method": "post",
+        "url": "/auth/remind",
+        "script": "./libs/login",
+        "handler": "remind"
+    },
+
+    {
+        "method": "get",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "getProfile"
+    },
+    {
+        "method": "post",
+        "url": "/user/profile",
+        "script": "./libs/login",
+        "handler": "setProfile"
+    },
+
+    {
+        "method": "post",
+        "url": "/feedback",
+        "script": "./libs/feedback",
+        "handler": "feedback"
+    },
+
+    {
+        "method": "get",
+        "url": "/main.html",
+        "script": "./libs/main",
+        "handler": "main"
+    }
+
+
+
+
+
+
+
+]

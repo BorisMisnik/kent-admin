@@ -1,0 +1,22 @@
+{
+    "signup": {
+        "from": "Kent <postmaster@kent.com.ua>",
+        "subject": "Реєстрація на сайті www.kent.com.ua",
+        "template": "mails/signup.html"
+    },
+    "remind": {
+        "from": "Kent <postmaster@kent.com.ua>",
+        "subject": "Зміна пароля на сайті www.kent.com.ua",
+        "template": "mails/remind.html"
+    },
+    "activate": {
+        "from": "Kent <postmaster@kent.com.ua>",
+        "subject": "Підтвердження реєстрації на сайті www.kent.com.ua",
+        "template": "mails/activate.html"
+    },
+    "deactivate": {
+        "from": "Kent <postmaster@kent.com.ua>",
+        "subject": "Відмова в реєстрації на сайті www.kent.com.ua",
+        "template": "mails/deactivate.html"
+    }
+}
