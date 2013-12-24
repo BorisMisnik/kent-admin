@@ -1,4 +1,7 @@
-Piezo Service
-=============
+Basic usage how-to:
 
-Administrative Control Panel
+```
+node app.js
+```
+
+browse `localhost:8000`
