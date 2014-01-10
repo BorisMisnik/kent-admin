@@ -1,8 +1,8 @@
 Basic usage how-to:
 
-Run mongodb on port:27017 and create database test1. Import all collections.
+Run mongodb on `port:27017` and create database `test1`. Import all collections.
 
-Configure apache
+Configure `apache`
 Enable two modules `mod_proxy` and `mod_proxy_http`. After add virtual host:
 
 ```
@@ -26,11 +26,10 @@ Example:
     </Location>
 </VirtualHost>
 
-```
 Run nodejs:
+
 ```
 node app.js
 
 ```
-
 browse `kent.com.ua:8000`
