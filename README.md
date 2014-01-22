@@ -1,5 +1,8 @@
 Basic usage how-to:
 
+Install `ImageMagick`
+`yum install ImagemMagick`
+
 Run mongodb on `port:27017` and create database `test1`. Import all collections.
 
 Configure apache:
