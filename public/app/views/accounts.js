@@ -107,6 +107,9 @@ define(
                         // email
                         if ( this.filters.email.active )
                             tots.push( this.filters.email.count );
+
+                        if ( this.filters.ahead.active )
+                            tots.push( this.filters.ahead.count );
  
                         if ( !this.filters.activate.active
                             && !this.filters.inactive.active
