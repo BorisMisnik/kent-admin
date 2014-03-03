@@ -28,7 +28,8 @@ define(
                         import: { active: false },
                         review: { active: false },
                         sms: {active: false},
-                        email: {active: false}
+                        email: {active: false},
+                        ahead : {active : false}
                     },
                     itemsPerPage: 20,
                     itemsCount: 1,
@@ -112,7 +113,8 @@ define(
                             && !this.filters.import.active
                             && !this.filters.review.active
                             && !this.filters.sms.active
-                            && this.filters.email.active )
+                            && !this.filters.email.active 
+                            && !this.filters.ahead.active)
                             tots.push( totals.all );
                         this.itemsCount = Math.max.apply( this, tots );
                         // totals
@@ -124,6 +126,8 @@ define(
                          this.filters.sms.count = totals.sms;
                          // email total
                          this.filters.email.count = totals.email;
+                         // ahead total
+                          this.filters.ahead.count = totals.ahead;
                         // paginator
                         this.paginator.prev =
                             1 != this.paginator.page;
@@ -172,7 +176,8 @@ define(
                                 import: this.filters.import.active,
                                 review: this.filters.review.active,
                                 sms : this.filters.sms.active,
-                                email : this.filters.email.active
+                                email : this.filters.email.active,
+                                ahead : this.filters.email.ahead,
                             },                                                         
                             paginator = {
                                 limit: this.itemsPerPage,

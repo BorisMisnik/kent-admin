@@ -434,6 +434,7 @@ exports.accountsList =
 						{ active: true },
 						{ login: { $ne : 'email'} },
 						{ login: { $ne : 'sms'} },
+						{ login: { $ne : 'ahead'} },
 						{ login: {$exists: true} }
 					]
 				});
@@ -448,6 +449,7 @@ exports.accountsList =
 						{ active: { $ne: true } },
 						{ login: { $ne : 'email'} },
 						{ login: { $ne : 'sms'} } ,
+						{ login: { $ne : 'ahead'} },
 						{ login: {$exists: true} }
 					]
 				});	
@@ -469,6 +471,9 @@ exports.accountsList =
 			// email
 			if ( 'true' == filters.email )
 				cond.push({ category: 'email' });
+
+			if ( 'true' == filters.ahead )
+				cond.push({ category: 'ahead' });
 		}
 		// paginator
 		if ( paginator ) {
@@ -485,6 +490,7 @@ exports.accountsList =
 		console.log( 'accounts list query:', query );
 
 		// get users
+		console.log('query', query);
 		auth.users(
 			// todo: get users with available roles only
 			query,
@@ -577,6 +583,7 @@ exports.totals =
 					{ active: true },
 					{ login: { $ne : 'email'} },
 					{ login: { $ne : 'sms'} },
+					{ login: { $ne : 'ahead'} } ,
 					{ login: {$exists: true} },
 				] }, next );
 		});
@@ -591,6 +598,7 @@ exports.totals =
 					{ active: { $ne: true } },
 					{ login: { $ne : 'email'} },
 					{ login: { $ne : 'sms'} } ,
+					{ login: { $ne : 'ahead'} } ,
 					{ login: {$exists: true} }
 				]
 			}, next );
@@ -611,6 +619,10 @@ exports.totals =
 		queue.push( function( next ) {
 			auth.count({ category : 'email' }, next );
 		});
+		// ahead
+		queue.push( function( next ) {
+			auth.count({ category : 'ahead' }, next );
+		});
 		// call
 		async.parallel( queue,
 			function( err, total ) {
@@ -627,7 +639,8 @@ exports.totals =
 					import: total.shift(),
 					review: total.shift(),
 					sms : total.shift(),
-					email : total.shift()
+					email : total.shift(),
+					ahead : total.shift()
 				});
 			})
 	};

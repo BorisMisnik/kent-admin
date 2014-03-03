@@ -54,6 +54,14 @@
         </li>
         {{/ email }}
 
+        {{# ahead }}
+        <li {{# active }}class="active"{{/ active }}>
+            <a data-filter="ahead" href="#">
+                Ahead {{# count }}({{ count }}){{/ count }}
+            </a>
+        </li>
+        {{/ ahead }}
+
     </ul>
     {{/ filters }}
 
