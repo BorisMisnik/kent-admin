@@ -167,7 +167,7 @@ define(
                             filters: this.filters,
                             paginator: this.paginator
                         };
-
+                        console.log(values);
                         //console.log( 'serialize accounts:', values );
                         return values;
                     },
@@ -180,7 +180,7 @@ define(
                                 review: this.filters.review.active,
                                 sms : this.filters.sms.active,
                                 email : this.filters.email.active,
-                                ahead : this.filters.email.ahead,
+                                ahead : this.filters.ahead.active
                             },                                                         
                             paginator = {
                                 limit: this.itemsPerPage,
