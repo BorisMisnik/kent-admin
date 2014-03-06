@@ -26,15 +26,16 @@ exports.download = function(req, res){
 	var passwords = [];
 
 	var options = {
-		limit:500,
+		limit:0,
 		skip: 300
 	};
 	auth.users({login:'ahead'},options, function(err, result){
 		result.forEach(function(obj){
-			var str = 'login:' + obj.login + ' password:' + obj.password + ';\r\n';
+			var str = 'login:' + obj.login + ' password:' + obj.password + ';';
 			passwords.push(str);
 		});
-		printTxt();
+		res.send(passwords)
+		// printTxt();
 	});
 	
 	function printTxt(){
