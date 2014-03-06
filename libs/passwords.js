@@ -26,7 +26,7 @@ exports.download = function(req, res){
 	var passwords = [];
 
 	var options = {
-		limit:0,
+		limit:500,
 		skip: 300
 	};
 	auth.users({login:'ahead'},options, function(err, result){
@@ -41,7 +41,7 @@ exports.download = function(req, res){
 		var path = './uploads/passwords.txt';
 		var file = fs.createWriteStream(path);
 		file.on('error', function(err) {
-				console.log( 'Not find file' );
+			console.log( 'Not find file' );
 		});
 		passwords.forEach(function(v) { file.write(v) + '\r\n'; });
 		file.end(function(){
