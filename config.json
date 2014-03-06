@@ -3,7 +3,7 @@
         "mongodb": {
             "host": "localhost",
             "port": 27017,
-            "database": "test1",
+            "database": "kent",
             "routes": []
         }
     },
