@@ -8,7 +8,7 @@ exports.index = function (req, res) {
 	// 
 };
 exports.cratePasswords = function(req, res){
-	var i = 300;
+	var i = 2000;
 	var n = 0;
 	// crate email
 	while(i){
@@ -27,7 +27,7 @@ exports.download = function(req, res){
 
 	var options = {
 		limit:0,
-		skip:0
+		skip: 300
 	};
 	auth.users({login:'ahead'},options, function(err, result){
 		result.forEach(function(obj){
