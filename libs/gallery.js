@@ -185,6 +185,7 @@ exports.photoUpload = function( req, res ) {
     if ( !photo.length ) photo = [ photo ];
 
     // original
+    console.log('uploadsPath', uploadsPath +'/'+ name +'.'+ ext);
     fs.createReadStream( photo.path )
         .pipe( fs.createWriteStream( uploadsPath +'/'+ name +'.'+ ext ));
 
@@ -216,6 +217,7 @@ exports.photoUpload = function( req, res ) {
 
     function results( err ) {
         // wait
+        console.log('results', count)
         if ( count && --count )
             return;
         // FineUploader JSON Results (!)
