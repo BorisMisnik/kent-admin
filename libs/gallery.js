@@ -161,85 +161,85 @@ exports.galleryRemove = function( req, res ) {
 // ------
 
 exports.photoUpload = function( req, res ) {
-    console.log('debugger');
-    var gallery_id = ObjectID( req.params.id ),
-        // upload
-        file = ( req.files || {} ),
-        photo = file.qqfile,
-        ext = photo && photo.type && String( photo.type ).replace( /^image\//, '' ), // path.extname( photo.path ),
-        name = photo && path.basename( photo.path, ext ),
-        types = [ '' ],
-        count = 3;
+    // console.log('debugger');
+    // var gallery_id = ObjectID( req.params.id ),
+    //     // upload
+    //     file = ( req.files || {} ),
+    //     photo = file.qqfile,
+    //     ext = photo && photo.type && String( photo.type ).replace( /^image\//, '' ), // path.extname( photo.path ),
+    //     name = photo && path.basename( photo.path, ext ),
+    //     types = [ '' ],
+    //     count = 3;
 
-    // todo: convert file
-    console.log('debugger');
-    debugger;
-    console.log('debugger');
-    //console.log( 'file:', id, photo, name );
-    console.log( req.files );
+    // // todo: convert file
+    // console.log('debugger');
+    // debugger;
+    // console.log('debugger');
+    // //console.log( 'file:', id, photo, name );
+    // console.log( req.files );
 
-    if ( !gallery_id || !photo || !ext || ( !photo.size && !photo.length ))
-        // FineUploader JSON Results (!)
-        return res.end(
-            JSON.stringify({ success: false }),
-            { 'Content-Type': 'text/plain' },
-            404 );
+    // if ( !gallery_id || !photo || !ext || ( !photo.size && !photo.length ))
+    //     // FineUploader JSON Results (!)
+    //     return res.end(
+    //         JSON.stringify({ success: false }),
+    //         { 'Content-Type': 'text/plain' },
+    //         404 );
 
-    if ( !photo.length ) photo = [ photo ];
+    // if ( !photo.length ) photo = [ photo ];
 
-    // original
-    console.log('uploadsPath', uploadsPath +'/'+ name +'.'+ ext);
-    fs.createReadStream( photo.path )
-        .pipe( fs.createWriteStream( uploadsPath +'/'+ name +'.'+ ext ));
+    // // original
+    // console.log('uploadsPath', uploadsPath +'/'+ name +'.'+ ext);
+    // fs.createReadStream( photo.path )
+    //     .pipe( fs.createWriteStream( uploadsPath +'/'+ name +'.'+ ext ));
 
-    // middle
-    gm( photo.path )
-        .resize( null, middleSize )     // 490
-        .write(
-            uploadsPath +'/'+ name +'_middle.'+ ext,
-            results );
+    // // middle
+    // gm( photo.path )
+    //     .resize( null, middleSize )     // 490
+    //     .write(
+    //         uploadsPath +'/'+ name +'_middle.'+ ext,
+    //         results );
 
-    // small
-    gm( photo.path )
-        .resize( null, smallSize )      // 151
-        .write(
-            uploadsPath +'/'+ name +'_small.'+ ext,
-            results );
+    // // small
+    // gm( photo.path )
+    //     .resize( null, smallSize )      // 151
+    //     .write(
+    //         uploadsPath +'/'+ name +'_small.'+ ext,
+    //         results );
 
-    cards.update(
-        { _id: gallery_id, type: gallery },
-        {   $push: { photos: {
-                name: name,
-                ext: ext,
-                likes: 0,
-                likers: []
-            }},
-            $inc: { photonums: 1 }
-        },
-        results );
+    // cards.update(
+    //     { _id: gallery_id, type: gallery },
+    //     {   $push: { photos: {
+    //             name: name,
+    //             ext: ext,
+    //             likes: 0,
+    //             likers: []
+    //         }},
+    //         $inc: { photonums: 1 }
+    //     },
+    //     results );
 
-    function results( err ) {
-        // wait
-        console.log('results', count)
-        if ( count && --count )
-            return;
-        // FineUploader JSON Results (!)
-        res.send(
-            JSON.stringify({
-                success: true,
-                id: gallery_id,
-                name: name,
-                ext: ext,
-                filename: name +'.'+ ext
-            }),
-            { 'Content-Type': 'text/plain' },
-            200
-        );
-        // remove temp image file
-        if ( photo ) fs.unlink( photo.path, function( err ) {
-            if ( err ) console.log( 'temp file remove error'.red.bold, err );
-        });
-    }
+    // function results( err ) {
+    //     // wait
+    //     console.log('results', count)
+    //     if ( count && --count )
+    //         return;
+    //     // FineUploader JSON Results (!)
+    //     res.send(
+    //         JSON.stringify({
+    //             success: true,
+    //             id: gallery_id,
+    //             name: name,
+    //             ext: ext,
+    //             filename: name +'.'+ ext
+    //         }),
+    //         { 'Content-Type': 'text/plain' },
+    //         200
+    //     );
+    //     // remove temp image file
+    //     if ( photo ) fs.unlink( photo.path, function( err ) {
+    //         if ( err ) console.log( 'temp file remove error'.red.bold, err );
+    //     });
+    // }
 };
 
 exports.photoRemove = function( req, res ) {
