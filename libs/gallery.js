@@ -171,7 +171,9 @@ exports.photoUpload = function( req, res ) {
         count = 3;
 
     // todo: convert file
+    console.log('debugger');
     debugger;
+    console.log('debugger');
     //console.log( 'file:', id, photo, name );
     console.log( req.files );
 
