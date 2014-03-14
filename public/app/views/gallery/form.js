@@ -56,7 +56,7 @@ function( app ) {
                 this.$( '#thumbnail-fine-uploader' )
                     .fineUploader({
                         request: {
-                            endpoint: '/gallery/photo/upload/'+ self.gallery.get( 'id' )
+                            endpoint: '/gallery/photo/uploadd/'+ self.gallery.get( 'id' )
                         },
                         maxConnections: 2,
                         multiple: true,
