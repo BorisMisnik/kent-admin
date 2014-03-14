@@ -17,7 +17,7 @@ var server = require( 'piezo-server' ),
     // file system
     path = require( 'path' ),
     fs = require( 'fs' ),
-    gm = require( 'gm' ).subClass({ imageMagick: true }),
+    gm = require( 'gm' ).subClass(),
     // locals
     gallery = 'gallery',
     uploadsPath = path.join( path.dirname( parent.first().filename ), '/public/photos/' ),
@@ -161,6 +161,7 @@ exports.galleryRemove = function( req, res ) {
 // ------
 
 exports.photoUpload = function( req, res ) {
+    console.log('debugger');
     var gallery_id = ObjectID( req.params.id ),
         // upload
         file = ( req.files || {} ),
