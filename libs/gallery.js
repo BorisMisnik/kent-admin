@@ -17,7 +17,7 @@ var server = require( 'piezo-server' ),
     // file system
     path = require( 'path' ),
     fs = require( 'fs' ),
-    gm = require( 'gm' ).subClass(),
+    gm = require( 'gm' ).subClass({ imageMagick: true }),
     // locals
     gallery = 'gallery',
     uploadsPath = path.join( path.dirname( parent.first().filename ), '/public/photos/' ),
@@ -27,7 +27,7 @@ var server = require( 'piezo-server' ),
 
 // Gallery
 // -------
-
+console.log('gellery')
 // get gallery list
 exports.galleryList = function( req, res ) {
     cards.list(
