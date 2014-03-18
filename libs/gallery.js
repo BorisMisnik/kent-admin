@@ -27,7 +27,6 @@ var server = require( 'piezo-server' ),
 
 // Gallery
 // -------
-console.log('gellery')
 // get gallery list
 exports.galleryList = function( req, res ) {
     cards.list(
@@ -161,7 +160,6 @@ exports.galleryRemove = function( req, res ) {
 // ------
 
 exports.photoUpload = function( req, res ) {
-    console.log('debugger');
     var gallery_id = ObjectID( req.params.id ),
         // upload
         file = ( req.files || {} ),
@@ -172,9 +170,7 @@ exports.photoUpload = function( req, res ) {
         count = 3;
 
     // todo: convert file
-    console.log('debugger');
     debugger;
-    console.log('debugger');
     //console.log( 'file:', id, photo, name );
     console.log( req.files );
 
@@ -220,7 +216,6 @@ exports.photoUpload = function( req, res ) {
 
     function results( err ) {
         // wait
-        console.log('results', count)
         if ( count && --count )
             return;
         // FineUploader JSON Results (!)
